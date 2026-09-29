@@ -1,0 +1,49 @@
+===================================================================
+      GUIDA SETUP AMBIENTE DI SVILUPPO (PC AZIENDALE)
+===================================================================
+
+-------------------------------------------------------------------
+1. PRODROMI & PREREQUISITI
+-------------------------------------------------------------------
+- Installa/Assicurati di avere una JDK 17 (o 11) installata sul PC.
+- Installa IntelliJ IDEA (versione Ultimate o Community).
+
+-------------------------------------------------------------------
+2. INSTALLAZIONE & CONFIGURAZIONE APACHE TOMCAT 9
+-------------------------------------------------------------------
+1. Scarica la versione "Core -> zip" di Apache Tomcat 9 dal sito ufficiale.
+2. Estrai l'archivio ZIP in una cartella di tua scelta (es. C:\apache-tomcat-9.0.xx).
+3. Non serve installarlo come servizio Windows, basta la cartella estratta.
+
+-------------------------------------------------------------------
+3. INSTALLAZIONE ORACLE DATABASE & SQL DEVELOPER
+-------------------------------------------------------------------
+1. Scarica e installa Oracle Database Express Edition (XE 21c o 18c).
+2. Durante l'installazione, annota la password dell'utente SYS/SYSTEM.
+3. Scarica ed estrai dbeaver per gestire visivamente il DB.
+
+-------------------------------------------------------------------
+4. CONFIGURAZIONE UTENTE E TABELLE SU ORACLE
+-------------------------------------------------------------------
+Apri SQL Developer (o SQL*Plus), connettiti come SYSTEM/SYS e apri un foglio di lavoro.
+
+--- STEP A: CREAZIONE UTENTE APPLICATIVO ---
+ALTER SESSION SET "_ORACLE_SCRIPT"=true;
+
+CREATE USER ecommerce_db IDENTIFIED BY password123;
+
+GRANT CONNECT, RESOURCE TO ecommerce_db;
+GRANT UNLIMITED TABLESPACE TO ecommerce_db;
+
+--- STEP B: CREAZIONE STRUTTURA TABELLE ---
+-- Disconnettiti da SYSTEM e connettiti con il nuovo utente: ecommerce_db / password123
+-------------------------------------------------------------------
+6. SCHELETRO DBConnection.java PER ORACLE
+-------------------------------------------------------------------
+Stringa JDBC e parametri per il file com.ecommerce.util.DBConnection:
+
+- Driver: Class.forName("oracle.jdbc.OracleDriver");
+- URL standard: "jdbc:oracle:thin:@localhost:1521:xe" (o :orcl)
+- USER: "ecommerce_db"
+- PASSWORD: "password123"
+===================================================================
