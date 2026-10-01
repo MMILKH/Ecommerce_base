@@ -1,6 +1,8 @@
 package dao;
 
+import model.Carrello;
 import model.Utente;
+import dao.CarrelloDao;
 import util.DBConnection;
 
 import java.sql.Connection;
@@ -123,7 +125,7 @@ public class UtenteDao {
             pstmt.setString(5, utente.getIndirizzo());
             pstmt.setInt(6, utente.getRuoloId());
             pstmt.setString(7, utente.getPassword());
-            pstmt.setString(9, utente.getData_ultima_creazione());
+            pstmt.setString(9, utente.getData_ultima_modifica());
 
 
             int riuscita = pstmt.executeUpdate();
@@ -133,5 +135,41 @@ public class UtenteDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean register(Utente utente) {
+
+
+        String sql = "INSERT INTO utente (nome, cognome, email, numero, indirizzo, passwordU, data_creazione,data_ultima_modifica)" +
+                " VALUES (?, ?, ?, ?, ?, ?,SYSDATE,SYSDATE)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, utente.getNome());
+            pstmt.setString(2, utente.getCognome());
+            pstmt.setString(3, utente.getEmail());
+            pstmt.setString(4, utente.getNumero());
+            pstmt.setString(5, utente.getIndirizzo());
+            pstmt.setString(6, utente.getPassword());
+
+            int riuscita = pstmt.executeUpdate();
+
+                if (riuscita > 0){
+
+                    Utente utenteAS = findByEmail(utente.getEmail());
+                    CarrelloDao carrelloDao = new CarrelloDao();
+                    Carrello carrello = new Carrello();
+                    carrello.setUtenteId(utenteAS.getId());
+                    carrelloDao.save(carrello);
+                    return true;
+                }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
 }

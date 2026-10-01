@@ -1,5 +1,6 @@
 package dao;
 
+import model.Prodotto;
 import model.RigaCarrello;
 import util.DBConnection;
 
@@ -41,42 +42,82 @@ public class RigaCarrelloDao {
         return righe;
     }
 
-    public boolean save(RigaCarrello riga) {
-        String sql = "INSERT INTO riga_carrello (carrello_id, prodotto_id, quantita, data_creazione) VALUES (?, ?, ?, SYSDATE)";
+
+
+
+    public void save(RigaCarrello riga) {
+        String newSql = "INSERT INTO riga_carrello (carrello_id, prodotto_id, quantita, data_creazione) VALUES (?, ?, ?, SYSDATE)";
+        String checkSql = "SELECT * FROM riga_carrello WHERE carrello_id = ? AND prodotto_id = ?";
+        String updateSql = "UPDATE riga_carrello SET quantita = quantita + ? WHERE carrello_id = ? AND prodotto_id = ?";
+        boolean prima = true;
+        try (Connection conn = DBConnection.getConnection()){
+
+            try (PreparedStatement pstmt = conn.prepareStatement(checkSql)) {
+                pstmt.setInt(1, riga.getCarrelloId());
+                pstmt.setInt(2, riga.getProdottoId());
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        prima = false;
+                    }
+                }
+
+            }
+
+            if (prima) {
+                try (PreparedStatement pstmt = conn.prepareStatement(newSql)) {
+                    pstmt.setInt(1, riga.getCarrelloId());
+                    pstmt.setInt(2, riga.getProdottoId());
+                    pstmt.setInt(3, riga.getQuantita());
+                    pstmt.executeUpdate();
+
+                }
+            } else {
+                try (PreparedStatement pstmt = conn.prepareStatement(updateSql)) {
+                    pstmt.setInt(1, riga.getQuantita());
+                    pstmt.setInt(2, riga.getCarrelloId());
+                    pstmt.setInt(3, riga.getProdottoId());
+                    pstmt.executeUpdate();
+                }
+
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public RigaCarrello findByCePId(int carrelloId, int prodottoId) {
+        RigaCarrello riga = null;
+        String sql = "SELECT * FROM riga_carrello WHERE carrello_id = ? AND prodotto_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, riga.getCarrelloId());
-            pstmt.setInt(2, riga.getProdottoId());
-            pstmt.setInt(3, riga.getQuantita());
+            pstmt.setInt(1, carrelloId);
+            pstmt.setInt(2, prodottoId);
 
-            int riuscite = pstmt.executeUpdate();
-            return riuscite > 0;
-
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    riga = new RigaCarrello(
+                            rs.getInt("id"),
+                            rs.getInt("carrello_id"),
+                            rs.getInt("prodotto_id"),
+                            rs.getInt("quantita"),
+                            rs.getString("data_creazione")
+                    );
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+
+        return riga;
     }
 
-    public boolean updateQuantita(int id, int nuovaQuantita) {
-        String sql = "UPDATE riga_carrello SET quantita = ? WHERE id = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, nuovaQuantita);
-            pstmt.setInt(2, id);
-
-            int riuscita = pstmt.executeUpdate();
-            return riuscita > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public boolean delete(int carrelloId, int prodottoId) {
         String sql = "DELETE FROM riga_carrello WHERE carrello_id = ? AND prodotto_id = ?";

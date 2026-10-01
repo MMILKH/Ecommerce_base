@@ -7,10 +7,10 @@ public class RigaCarrello {
     private int quantita;
     private String dataCreazione;
 
-    // Costruttore vuoto (JavaBean)
+
     public RigaCarrello() {}
 
-    // Costruttore completo (per letture da DB)
+
     public RigaCarrello(int id, int carrelloId, int prodottoId, int quantita, String dataCreazione) {
         this.id = id;
         this.carrelloId = carrelloId;
@@ -19,14 +19,17 @@ public class RigaCarrello {
         this.dataCreazione = dataCreazione;
     }
 
-    // Costruttore per inserimento nel carrello
-    public RigaCarrello(int carrelloId, int prodottoId, int quantita) {
+
+    public RigaCarrello(int carrelloId, int prodottoId, int quantita, String dataCreazione) {
         this.carrelloId = carrelloId;
         this.prodottoId = prodottoId;
         this.quantita = quantita;
+        this.dataCreazione = dataCreazione;
     }
 
-    // Getters e Setters
+
+
+
     public int getId() {
         return id;
     }

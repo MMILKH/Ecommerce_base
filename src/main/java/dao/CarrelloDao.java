@@ -37,7 +37,7 @@ public class CarrelloDao {
         return carrello;
     }
 
-    public boolean save(Carrello carrello) {
+    public void save(Carrello carrello) {
         String sql = "INSERT INTO carrello (utente_id, data_creazione, ultimo_aggiornamento) VALUES (?, SYSDATE, SYSDATE)";
 
         try (Connection conn = DBConnection.getConnection();
@@ -45,12 +45,10 @@ public class CarrelloDao {
 
             pstmt.setInt(1, carrello.getUtenteId());
 
-            int riuscito = pstmt.executeUpdate();
-            return riuscito > 0;
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
     }
 }

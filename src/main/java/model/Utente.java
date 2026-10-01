@@ -4,9 +4,9 @@ import javax.print.DocFlavor;
 
 public class Utente {
     private int id, ruoloId;
-    private String nome, cognome, email,numero, indirizzo, password,data_creazione, data_ultima_creazione;
+    private String nome, cognome, email,numero, indirizzo, password,data_creazione, data_ultima_modifica;
 
-    public Utente(int id, String nome, String cognome, String email, String numero, String indirizzo,int ruoloId, String password, String data_creazione, String data_ultima_creazione) {
+    public Utente(int id, String nome, String cognome, String email, String numero, String indirizzo,int ruoloId, String password, String data_creazione, String data_ultima_modifica) {
         this.id = id;
         this.ruoloId = ruoloId;
         this.nome = nome;
@@ -16,11 +16,11 @@ public class Utente {
         this.indirizzo = indirizzo;
         this.password = password;
         this.data_creazione = data_creazione;
-        this.data_ultima_creazione = data_ultima_creazione;
+        this.data_ultima_modifica = data_ultima_modifica;
     }
     public Utente(){}
 
-    public Utente( int ruoloId, String nome, String cognome, String email, String numero, String indirizzo, String password, String data_creazione, String data_ultima_creazione) {
+    public Utente( int ruoloId, String nome, String cognome, String email, String numero, String indirizzo, String password, String data_creazione, String data_ultima_modifica) {
 
         this.ruoloId = ruoloId;
         this.nome = nome;
@@ -30,7 +30,7 @@ public class Utente {
         this.indirizzo = indirizzo;
         this.password = password;
         this.data_creazione = data_creazione;
-        this.data_ultima_creazione = data_ultima_creazione;
+        this.data_ultima_modifica = data_ultima_modifica;
 
     }
 
@@ -106,12 +106,12 @@ public class Utente {
         this.data_creazione = data_creazione;
     }
 
-    public String getData_ultima_creazione() {
-        return data_ultima_creazione;
+    public String getData_ultima_modifica() {
+        return data_ultima_modifica;
     }
 
-    public void setData_ultima_creazione(String data_ultima_creazione) {
-        this.data_ultima_creazione = data_ultima_creazione;
+    public void setData_ultima_modifica(String data_ultima_modifica) {
+        this.data_ultima_modifica = data_ultima_modifica;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class Utente {
                 ", indirizzo='" + indirizzo + '\'' +
                 ", password='" + password + '\'' +
                 ", data_creazione='" + data_creazione + '\'' +
-                ", data_ultima_creazione='" + data_ultima_creazione + '\'' +
+                ", data_ultima_modifica='" + data_ultima_modifica + '\'' +
                 '}';
     }
 }

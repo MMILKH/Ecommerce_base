@@ -25,8 +25,8 @@ public class ProdottoDao {
                         rs.getInt("id"),
                         rs.getString("sku"),
                         rs.getString("nome"),
-                        rs.getString("descrizione_breve"),
-                        rs.getString("descrizione_estesa"),
+                        rs.getString("descrizioneb"),
+                        rs.getString("descrizionee"),
                         rs.getDouble("prezzo"),
                         rs.getString("immagine"),
                         rs.getString("categoria"),
@@ -58,8 +58,8 @@ public class ProdottoDao {
                             rs.getInt("id"),
                             rs.getString("sku"),
                             rs.getString("nome"),
-                            rs.getString("descrizione_breve"),
-                            rs.getString("descrizione_estesa"),
+                            rs.getString("descrizioneb"),
+                            rs.getString("descrizionee"),
                             rs.getDouble("prezzo"),
                             rs.getString("immagine"),
                             rs.getString("categoria"),
@@ -104,19 +104,20 @@ public class ProdottoDao {
 
     public List<Prodotto> findByCategoria(String categoria) {
         String sql = "SELECT * FROM prodotto WHERE categoria = ? ORDER BY id";
+
         List<Prodotto> prodotti = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, categoria);
+                pstmt.setString(1, categoria);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Prodotto p = new Prodotto(
                             rs.getInt("id"),
                             rs.getString("sku"),
                             rs.getString("nome"),
-                            rs.getString("descrizione_breve"),
-                            rs.getString("descrizione_estesa"),
+                            rs.getString("descrizioneB"),
+                            rs.getString("descrizioneE"),
                             rs.getDouble("prezzo"),
                             rs.getString("immagine"),
                             rs.getString("categoria"),

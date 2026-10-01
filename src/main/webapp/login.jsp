@@ -2,27 +2,32 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
     <title>Login - E-Commerce</title>
 </head>
 <body>
 
-<div class="login-box">
+<div >
     <h2>Accedi</h2>
 
     <form action="${pageContext.request.contextPath}/login" method="post">
-        <div class="form-group">
+        <div >
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
         </div>
 
-        <div class="form-group">
+        <div >
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
         </div>
 
-        <button type="submit" class="btn">Accedi</button>
+        <button type="submit" >Accedi</button>
     </form>
+
+    <c:if test="${not empty errore}">
+        <div >
+                ${errore}
+        </div>
+    </c:if>
 
 </div>
 
