@@ -33,7 +33,7 @@
                 <div>
                 <form action="${pageContext.request.contextPath}/carrello" method="post" style="display:inline;">
                     <input type="hidden" name="prodottoId" value="${p.id}" />
-                    <input type="number" name="quantita" value="${quantitaMap[p.id]}" min="1" max="99" style="width: 50px;" />
+                    <input type="number" name="quantita" value="${listaQuantita[p.id]}" min="1" max="99" style="width: 50px;" />
                     <button type="submit">Modifica quantita</button>
                 </form>
                 </div>

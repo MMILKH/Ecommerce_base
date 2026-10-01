@@ -41,16 +41,22 @@ public class CarrelloServlet extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
+        response.setDateHeader("Expires", 0);
+
         HttpSession session = request.getSession(false);
 
         double totale = 0;
 
         Utente u=null;
-        if (session != null) {
-           u = (Utente) session.getAttribute("utenteLoggato");
 
-        } else{
+        if (session == null || session.getAttribute("utenteLoggato") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        else{
+            u = (Utente) session.getAttribute("utenteLoggato");
         }
 
         Carrello c=carrelloDao.findByUtenteId(u.getId());
@@ -88,8 +94,8 @@ public class CarrelloServlet extends HttpServlet {
 
             u = (Utente) session.getAttribute("utenteLoggato");
             Carrello c=carrelloDao.findByUtenteId(u.getId());
-            Prodotto p = prodottoDao.findById((Integer)request.getAttribute("prodottoId"));
-            rigaCarrelloDao.updateQuantita(c.getId(),p.getId(), (Integer) request.getAttribute("quantita"));
+            Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
+            rigaCarrelloDao.updateQuantita(c.getId(),p.getId(), Integer.parseInt(request.getParameter("quantita")));
             response.sendRedirect(request.getContextPath() + "/carrello");
 
         }
