@@ -2,60 +2,73 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 
 <!DOCTYPE html>
-
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title >Catalogo - E-Commerce</title>
-    <h1 >CATALOGO</h1>
+    <title>Carrello - E-Commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="p-4">
 
-<div >
-    <c:choose>
-
-        <c:when test="${not empty utenteLoggato}">
-            <span>Carrello di <strong>${utenteLoggato.nome} ${utenteLoggato.cognome}</strong></span>
-        </c:when>
-        <c:otherwise>
-            <a href="${pageContext.request.contextPath}/login">Accedi</a>
-        </c:otherwise>
-    </c:choose>
-</div>
-<div>
-
-    <div>
-        <c:forEach items ="${listaProdotti}" var="p">
-            <div >
-                <h3>${p.nome}</h3>
-                <p>${p.descrizioneBreve}</p>
-                <p>${p.prezzo}</p>
-                <div>
-                <form action="${pageContext.request.contextPath}/carrello" method="post" style="display:inline;">
-                    <input type="hidden" name="prodottoId" value="${p.id}" />
-                    <input type="number" name="quantita" value="${listaQuantita[p.id]}" min="1" max="99" style="width: 50px;" />
-                    <button type="submit">Modifica quantita</button>
-                </form>
-                </div>
-
-            </div>
-
-
-        </c:forEach>
-
-        <br>
-        <br>
-
-        <h1>TOTALE:${totale}</h1>
-
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 p-3 border">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/catalogo">E-Commerce</a>
+        <div>
+            <span class="me-3 text-white">Benvenuto, <strong>${utenteLoggato.nome}</strong></span>
+            <a href="${pageContext.request.contextPath}/login?azione=logout"
+               class="btn btn-outline-light btn-sm">Logout</a>
+        </div>
     </div>
+</nav>
 
+<div class="container">
+    <h1 class="mb-4">Carrello Acquisti</h1>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <c:forEach items="${listaProdotti}" var="p">
+                <div class="card mb-3 p-3">
+                    <div class="row align-items-center">
+                        <div class="col-md-7">
+                            <h3>${p.nome}</h3>
+                            <p class="text-muted mb-1">${p.descrizioneBreve}</p>
+                            <p class="fw-bold">&euro; ${p.prezzo}</p>
+                        </div>
+
+                        <div class="col-md-5 text-md-end mt-3 mt-md-0">
+                            <form action="${pageContext.request.contextPath}/carrello" method="post"
+                                  class="d-inline-flex align-items-center gap-2 mb-2">
+                                <input type="hidden" name="azione" value="aggiornaq"/>
+                                <input type="hidden" name="prodottoId" value="${p.id}"/>
+                                <input type="number" name="quantita" value="${listaQuantita[p.id]}" min="1" max="99"
+                                       class="form-control form-control-sm text-center" style="width: 60px;"/>
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">Aggiorna</button>
+                            </form>
+
+                            <form action="${pageContext.request.contextPath}/carrello" method="post" class="d-inline">
+                                <input type="hidden" name="azione" value="rimuovi"/>
+                                <input type="hidden" name="prodottoId" value="${p.id}"/>
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Rimuovi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="p-4 border bg-white">
+                <h3>Riepilogo</h3>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Totale:</span>
+                    <span class="fw-bold fs-5 text-success">&euro; ${totale}</span>
+                </div>
+                <button class="btn btn-success w-100 btn-sm">Procedi all'ordine</button>
+            </div>
+        </div>
+    </div>
 </div>
-
 
 </body>
 </html>
-
-
-

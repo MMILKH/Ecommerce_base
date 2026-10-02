@@ -1,6 +1,5 @@
 package dao;
 
-import model.Prodotto;
 import model.RigaCarrello;
 import util.DBConnection;
 
@@ -43,14 +42,13 @@ public class RigaCarrelloDao {
     }
 
 
-
-
     public void save(RigaCarrello riga) {
+
         String newSql = "INSERT INTO riga_carrello (carrello_id, prodotto_id, quantita, data_creazione) VALUES (?, ?, ?, SYSDATE)";
         String checkSql = "SELECT * FROM riga_carrello WHERE carrello_id = ? AND prodotto_id = ?";
         String updateSql = "UPDATE riga_carrello SET quantita = quantita + ? WHERE carrello_id = ? AND prodotto_id = ?";
         boolean prima = true;
-        try (Connection conn = DBConnection.getConnection()){
+        try (Connection conn = DBConnection.getConnection()) {
 
             try (PreparedStatement pstmt = conn.prepareStatement(checkSql)) {
                 pstmt.setInt(1, riga.getCarrelloId());
@@ -81,42 +79,11 @@ public class RigaCarrelloDao {
 
             }
 
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public RigaCarrello findByCePId(int carrelloId, int prodottoId) {
-        RigaCarrello riga = null;
-        String sql = "SELECT * FROM riga_carrello WHERE carrello_id = ? AND prodotto_id = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, carrelloId);
-            pstmt.setInt(2, prodottoId);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    riga = new RigaCarrello(
-                            rs.getInt("id"),
-                            rs.getInt("carrello_id"),
-                            rs.getInt("prodotto_id"),
-                            rs.getInt("quantita"),
-                            rs.getString("data_creazione")
-                    );
-                }
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return riga;
     }
-
-
 
 
     public boolean delete(int carrelloId, int prodottoId) {

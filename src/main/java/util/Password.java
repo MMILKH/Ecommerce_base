@@ -1,5 +1,5 @@
 package util;
-import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,9 +11,8 @@ public class Password {
         md.update(password.getBytes());
         byte[] hash = md.digest();
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < hash.length; i++) {
-
-            sb.append(String.format("%02x", hash[i] & 0xff));
+        for (byte b : hash) {
+            sb.append(String.format("%02x", b & 0xff));
         }
 
         return sb.toString();

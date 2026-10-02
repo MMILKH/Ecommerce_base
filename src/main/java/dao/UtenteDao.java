@@ -2,7 +2,6 @@ package dao;
 
 import model.Carrello;
 import model.Utente;
-import dao.CarrelloDao;
 import util.DBConnection;
 
 import java.sql.Connection;
@@ -113,7 +112,7 @@ public class UtenteDao {
 
     public boolean save(Utente utente) {
         String sql = "INSERT INTO utente (nome, cognome, email, numero, indirizzo, ruolo_id, passwordU, data_creazione,data_ultima_modifica)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?,SYSDATE,?)";
+                " VALUES (?, ?, ?, ?, ?, ?, ?,SYSDATE,SYSDATE)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -125,7 +124,6 @@ public class UtenteDao {
             pstmt.setString(5, utente.getIndirizzo());
             pstmt.setInt(6, utente.getRuoloId());
             pstmt.setString(7, utente.getPassword());
-            pstmt.setString(9, utente.getData_ultima_modifica());
 
 
             int riuscita = pstmt.executeUpdate();
@@ -155,15 +153,14 @@ public class UtenteDao {
 
             int riuscita = pstmt.executeUpdate();
 
-                if (riuscita > 0){
+            if (riuscita > 0) {
 
-                    Utente utenteAS = findByEmail(utente.getEmail());
-                    CarrelloDao carrelloDao = new CarrelloDao();
-                    Carrello carrello = new Carrello();
-                    carrello.setUtenteId(utenteAS.getId());
-                    carrelloDao.save(carrello);
-                    return true;
-                }
+                Utente utenteAS = findByEmail(utente.getEmail());
+                CarrelloDao carrelloDao = new CarrelloDao();
+                Carrello carrello = new Carrello(utenteAS.getId());
+                carrelloDao.save(carrello);
+                return true;
+            }
 
 
         } catch (SQLException e) {
