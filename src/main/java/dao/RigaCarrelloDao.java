@@ -104,6 +104,22 @@ public class RigaCarrelloDao {
         }
     }
 
+
+    public boolean svuotaCarrello(int carrelloId) {
+        String sql = "DELETE FROM riga_carrello WHERE carrello_id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, carrelloId);
+
+            int riuscito = pstmt.executeUpdate();
+            return riuscito > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean updateQuantita(int carrelloId, int prodottoId, int nuovaQuantita) {
         String sql = "UPDATE riga_carrello SET quantita = ? WHERE carrello_id = ? AND prodotto_id = ?";
 
@@ -123,3 +139,4 @@ public class RigaCarrelloDao {
         }
     }
 }
+

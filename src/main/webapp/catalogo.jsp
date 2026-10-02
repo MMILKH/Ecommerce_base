@@ -63,7 +63,7 @@
                                           class="d-inline-flex gap-2 align-items-center">
                                         <input type="hidden" name="prodottoId" value="${p.id}"/>
                                         <input type="number" name="quantita" value="1" min="1"
-                                               class="form-control form-control-sm text-center" style="width: 60px;"/>
+                                               class="form-control form-control-sm text-center"/>
                                         <button type="submit" class="btn btn-primary btn-sm">Aggiungi</button>
                                     </form>
                                 </c:if>

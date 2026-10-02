@@ -64,7 +64,19 @@
                     <span>Totale:</span>
                     <span class="fw-bold fs-5 text-success">&euro; ${totale}</span>
                 </div>
-                <button class="btn btn-success w-100 btn-sm">Procedi all'ordine</button>
+                <div class="p-4">
+                    <form action="${pageContext.request.contextPath}/ordine" method="post">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="indirizzo">Indirizzo di Spedizione</label>
+                            <input class="form-control" type="text" id="indirizzo" name="indirizzoS" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 fw-bold  text-light">
+                            Conferma Ordine
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

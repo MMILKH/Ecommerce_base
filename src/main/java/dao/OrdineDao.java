@@ -1,12 +1,10 @@
 package dao;
 
+import model.Carrello;
 import model.Ordine;
 import util.DBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class OrdineDao {
 
@@ -44,20 +42,28 @@ public class OrdineDao {
                 "VALUES (?, SYSDATE, ?,?,1)";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setInt(1, ordine.getUtenteId());
 
-            pstmt.setDouble(3, ordine.getImportoTotale());
-            pstmt.setString(4, ordine.getIndirizzoSpedizione());
+            pstmt.setDouble(2, ordine.getImportoTotale());
+            pstmt.setString(3, ordine.getIndirizzoSpedizione());
 
 
             int riuscito = pstmt.executeUpdate();
-            return riuscito > 0;
+            if (riuscito > 0) {
+
+                Carrello c = new Carrello();
+                CarrelloDao carrelloDao = new CarrelloDao();
+                c = carrelloDao.findByUtenteId(ordine.getUtenteId());
+                RigaCarrelloDao rc = new RigaCarrelloDao();
+                rc.svuotaCarrello(ordine.getId());
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+        return true;
     }
 }

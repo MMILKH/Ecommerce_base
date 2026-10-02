@@ -10,7 +10,8 @@ public class RigaOrdine {
     private double prezzoUnitario;
     private double prezzoRiga;
 
-    public RigaOrdine() {}
+    public RigaOrdine() {
+    }
 
     public RigaOrdine(int id, int ordineId, int prodottoId, String sku, String nomeProdotto, int quantita, double prezzoUnitario, double prezzoRiga) {
         this.id = id;
@@ -23,11 +24,9 @@ public class RigaOrdine {
         this.prezzoRiga = prezzoRiga;
     }
 
-    public RigaOrdine(int ordineId, int prodottoId, String sku, String nomeProdotto, int quantita, double prezzoUnitario, double prezzoRiga) {
+    public RigaOrdine(int ordineId, int prodottoId, int quantita, double prezzoUnitario, double prezzoRiga) {
         this.ordineId = ordineId;
         this.prodottoId = prodottoId;
-        this.sku = sku;
-        this.nomeProdotto = nomeProdotto;
         this.quantita = quantita;
         this.prezzoUnitario = prezzoUnitario;
         this.prezzoRiga = prezzoRiga;
