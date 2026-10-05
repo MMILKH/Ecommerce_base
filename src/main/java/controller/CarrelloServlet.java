@@ -1,13 +1,12 @@
 package controller;
 
+import dao.CarrelloDao;
+import dao.ProdottoDao;
+import dao.RigaCarrelloDao;
 import model.Carrello;
 import model.Prodotto;
 import model.RigaCarrello;
 import model.Utente;
-import dao.CarrelloDao;
-import dao.ProdottoDao;
-
-import dao.RigaCarrelloDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,13 +24,13 @@ import java.util.Map;
 @WebServlet("/carrello")
 public class CarrelloServlet extends HttpServlet {
 
-    CarrelloDao carrelloDao ;
-    ProdottoDao prodottoDao ;
-    RigaCarrelloDao rigaCarrelloDao ;
+    CarrelloDao carrelloDao;
+    ProdottoDao prodottoDao;
+    RigaCarrelloDao rigaCarrelloDao;
 
 
     @Override
-    public void init(){
+    public void init() {
         carrelloDao = new CarrelloDao();
         prodottoDao = new ProdottoDao();
         rigaCarrelloDao = new RigaCarrelloDao();
@@ -49,37 +48,35 @@ public class CarrelloServlet extends HttpServlet {
 
         double totale = 0;
 
-        Utente u=null;
+        Utente u = null;
 
         if (session == null || session.getAttribute("utenteLoggato") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
-        }
-        else{
+        } else {
             u = (Utente) session.getAttribute("utenteLoggato");
         }
 
-        Carrello c=carrelloDao.findByUtenteId(u.getId());
+        Carrello c = carrelloDao.findByUtenteId(u.getId());
         List<RigaCarrello> righe = rigaCarrelloDao.findByCarrelloId(c.getId());
         List<Prodotto> prodotti = new ArrayList<>();
-        Map<Integer, Integer> quantitaxprodotto= new HashMap<>();
-        for(RigaCarrello r:righe){
-            quantitaxprodotto.put((Integer)r.getProdottoId(), (Integer)r.getQuantita());
-            Prodotto p= prodottoDao.findById(r.getProdottoId());
+        Map<Integer, Integer> quantitaxprodotto = new HashMap<>();
+        for (RigaCarrello r : righe) {
+            quantitaxprodotto.put((Integer) r.getProdotto().getId(), (Integer) r.getQuantita());
+            Prodotto p = prodottoDao.findById(r.getProdotto().getId());
             prodotti.add(p);
 
             totale += p.getPrezzo() * r.getQuantita();
 
         }
-        request.setAttribute("listaProdotti",prodotti);
-        request.setAttribute("listaQuantita",quantitaxprodotto);
-        request.setAttribute("totale",totale);
+        request.setAttribute("listaProdotti", prodotti);
+        request.setAttribute("listaQuantita", quantitaxprodotto);
+        request.setAttribute("totale", totale);
 
         request.getRequestDispatcher("/carrello.jsp").forward(request, response);
 
 
     }
-
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,34 +86,33 @@ public class CarrelloServlet extends HttpServlet {
         String azione = request.getParameter("azione");
 
 
-        Utente u=null;
+        Utente u = null;
 
         if (azione == null || azione.equals("")) {
 
             response.sendRedirect(request.getContextPath() + "/carrello");
             return;
         }
-    switch (azione){
-        case "aggiornaq":
-            if (session != null) {
-                u = (Utente) session.getAttribute("utenteLoggato");
-                Carrello c=carrelloDao.findByUtenteId(u.getId());
-                Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
-                rigaCarrelloDao.updateQuantita(c.getId(),p.getId(), Integer.parseInt(request.getParameter("quantita")));
-                response.sendRedirect(request.getContextPath() + "/carrello");
-                break;
+        switch (azione) {
+            case "aggiornaq":
+                if (session != null) {
+                    u = (Utente) session.getAttribute("utenteLoggato");
+                    Carrello c = carrelloDao.findByUtenteId(u.getId());
+                    Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
+                    rigaCarrelloDao.updateQuantita(c.getId(), p.getId(), Integer.parseInt(request.getParameter("quantita")));
+                    response.sendRedirect(request.getContextPath() + "/carrello");
+                    break;
+                }
+            case "rimuovi":
+                if (session != null) {
+                    u = (Utente) session.getAttribute("utenteLoggato");
+                    Carrello c = carrelloDao.findByUtenteId(u.getId());
+                    Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
+                    rigaCarrelloDao.delete(c.getId(), p.getId());
+                    response.sendRedirect(request.getContextPath() + "/carrello");
+                    break;
+                }
         }
-        case "rimuovi":
-            if (session != null) {
-                u = (Utente) session.getAttribute("utenteLoggato");
-                Carrello c=carrelloDao.findByUtenteId(u.getId());
-                Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
-                rigaCarrelloDao.delete(c.getId(),p.getId());
-                response.sendRedirect(request.getContextPath() + "/carrello");
-                break;
-            }
-    }
-
 
 
     }

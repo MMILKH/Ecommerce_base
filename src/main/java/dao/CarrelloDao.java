@@ -1,54 +1,34 @@
 package dao;
 
 import model.Carrello;
-import util.DBConnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import util.HibernateUtil;
 
 public class CarrelloDao {
 
     public Carrello findByUtenteId(int utenteId) {
-        String sql = "SELECT * FROM carrello WHERE utente_id = ?";
-        Carrello carrello = null;
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, utenteId);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    carrello = new Carrello(
-                            rs.getInt("id"),
-                            rs.getInt("utente_id"),
-                            rs.getString("data_creazione"),
-                            rs.getString("ultimo_aggiornamento")
-                    );
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        String hql = "FROM Carrello c WHERE c.utente.id = :utenteId";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Carrello.class).setParameter("utenteId", utenteId).uniqueResult();
         }
 
-        return carrello;
     }
 
-    public void save(Carrello carrello) {
-        String sql = "INSERT INTO carrello (utente_id, data_creazione, ultimo_aggiornamento) VALUES (?, SYSDATE, SYSDATE)";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, carrello.getUtenteId());
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
+    public boolean save(Carrello carrello) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            session.persist(carrello);
+            tx.commit();
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+
         }
     }
 }

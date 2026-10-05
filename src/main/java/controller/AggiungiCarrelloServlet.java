@@ -1,11 +1,12 @@
 package controller;
 
-import model.Carrello;
-
-import dao.RigaCarrelloDao;
 import dao.CarrelloDao;
-import model.Utente;
+import dao.ProdottoDao;
+import dao.RigaCarrelloDao;
+import model.Carrello;
+import model.Prodotto;
 import model.RigaCarrello;
+import model.Utente;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
+import java.time.LocalDateTime;
 
 
 @WebServlet("/aggiungiCarrello")
@@ -23,12 +24,14 @@ public class AggiungiCarrelloServlet extends HttpServlet {
 
     private CarrelloDao carrelloDao;
     private RigaCarrelloDao rigaCarrelloDao;
+    private ProdottoDao prodottoDao;
 
     @Override
     public void init() throws ServletException {
 
         carrelloDao = new CarrelloDao();
         rigaCarrelloDao = new RigaCarrelloDao();
+        prodottoDao = new ProdottoDao();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,10 +42,11 @@ public class AggiungiCarrelloServlet extends HttpServlet {
 
             Carrello c = carrelloDao.findByUtenteId(u.getId());
             int qta = Integer.parseInt(request.getParameter("quantita"));
-            RigaCarrello r = new RigaCarrello(c.getId(),Integer.parseInt(request.getParameter("prodottoId")),qta,"");
+            Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
+            RigaCarrello r = new RigaCarrello(c, p, qta, LocalDateTime.now());
             rigaCarrelloDao.save(r);
         }
 
-        response.sendRedirect(request.getContextPath()+"/catalogo");
+        response.sendRedirect(request.getContextPath() + "/catalogo");
     }
 }

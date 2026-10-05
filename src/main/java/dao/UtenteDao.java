@@ -38,8 +38,7 @@ public class UtenteDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
             String hql = "from Utente WHERE email = :email";
-            session.createQuery(hql).setParameter("email", email);
-            return (Utente) session.createQuery(hql, Utente.class);
+            return (Utente) session.createQuery(hql, Utente.class).setParameter("email", email);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,10 +57,12 @@ public class UtenteDao {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            tx.rollback();
+            if (tx != null) {
+                tx.rollback();
+            }
             return false;
         }
     }
 
-   
+
 }

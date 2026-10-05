@@ -43,7 +43,7 @@ public class Utente {
         return ruolo;
     }
 
-    public void setRuoloId(Ruolo ruolo) {
+    public void setRuolo(Ruolo ruolo) {
         this.ruolo = ruolo;
     }
 
