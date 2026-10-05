@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 
         if (azione == null || azione.equals("")) {
 
-        }else if (azione.equals("logout")) {
+        } else if (azione.equals("logout")) {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
         }
 
 
-        if (email == null || email.trim().isEmpty() || passwordChiaro == null || passwordChiaro.trim().isEmpty()) {
+        if (email == null || email.trim().isEmpty() || passwordChiaro.trim().isEmpty()) {
             request.setAttribute("errore", "Compila tutti i campi obbligatori.");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
@@ -67,7 +67,7 @@ public class LoginServlet extends HttpServlet {
         Utente utente = utenteDao.findByEmail(email);
 
 
-        if (utente != null && utente.getPassword().equals(password)) {
+        if (utente != null && password.equals(utente.getPassword())) {
 
 
             HttpSession session = request.getSession();

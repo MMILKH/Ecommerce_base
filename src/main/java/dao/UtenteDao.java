@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class UtenteDao {
@@ -37,8 +36,8 @@ public class UtenteDao {
     public Utente findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-            String hql = "from Utente WHERE email = :email";
-            return (Utente) session.createQuery(hql, Utente.class).setParameter("email", email);
+            String hql = "from Utente u WHERE u.email = :email";
+            return session.createQuery(hql, Utente.class).setParameter("email", email).uniqueResult();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,20 +46,34 @@ public class UtenteDao {
     }
 
     public boolean save(Utente utente) {
+        Session session = null;
         Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            utente.setData_creazione(LocalDateTime.now());
-            utente.setData_ultima_modifica(LocalDateTime.now());
+
+            utente.setData_creazione(new java.util.Date());
+            utente.setData_ultima_modifica(new java.util.Date());
+
             session.persist(utente);
             tx.commit();
             return true;
+
         } catch (Exception e) {
             e.printStackTrace();
-            if (tx != null) {
-                tx.rollback();
+            if (tx != null && tx.isActive()) {
+                try {
+                    tx.rollback();
+                } catch (Exception rbEx) {
+                    rbEx.printStackTrace();
+                }
             }
             return false;
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
     }
 

@@ -1,20 +1,20 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class RigaCarrello {
     private int id;
     private Carrello carrello;
     private Prodotto prodotto;
     private int quantita;
-    private LocalDateTime dataCreazione;
+    private Date dataCreazione;
 
 
     public RigaCarrello() {
     }
 
 
-    public RigaCarrello(int id, Carrello carrello, Prodotto prodotto, int quantita, LocalDateTime dataCreazione) {
+    public RigaCarrello(int id, Carrello carrello, Prodotto prodotto, int quantita, Date dataCreazione) {
         this.id = id;
         this.carrello = carrello;
         this.prodotto = prodotto;
@@ -23,7 +23,7 @@ public class RigaCarrello {
     }
 
 
-    public RigaCarrello(Carrello carrello, Prodotto prodotto, int quantita, LocalDateTime dataCreazione) {
+    public RigaCarrello(Carrello carrello, Prodotto prodotto, int quantita, Date dataCreazione) {
         this.carrello = carrello;
         this.prodotto = prodotto;
         this.quantita = quantita;
@@ -63,11 +63,11 @@ public class RigaCarrello {
         this.quantita = quantita;
     }
 
-    public LocalDateTime getDataCreazione() {
+    public Date getDataCreazione() {
         return dataCreazione;
     }
 
-    public void setDataCreazione(LocalDateTime dataCreazione) {
+    public void setDataCreazione(Date dataCreazione) {
         this.dataCreazione = dataCreazione;
     }
 }

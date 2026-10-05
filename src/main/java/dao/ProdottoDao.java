@@ -34,19 +34,29 @@ public class ProdottoDao {
     }
 
     public boolean save(Prodotto prodotto) {
+        Session session = null;
         Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.persist(prodotto);
             tx.commit();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            if (tx != null) {
-                tx.rollback();
+            if (tx != null && tx.isActive()) {
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
             ;
             return false;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
     }
 

@@ -1,18 +1,20 @@
 package model;
 
 
+import java.util.Date;
+
 public class Carrello {
     private int id;
     private Utente utente;
-    private String dataCreazione;
-    private String ultimoAggiornamento;
+    private Date dataCreazione;
+    private Date ultimoAggiornamento;
 
 
     public Carrello() {
     }
 
 
-    public Carrello(int id, Utente utente, String dataCreazione, String ultimoAggiornamento) {
+    public Carrello(int id, Utente utente, Date dataCreazione, Date ultimoAggiornamento) {
         this.id = id;
         this.utente = new Utente();
         this.dataCreazione = dataCreazione;
@@ -35,19 +37,19 @@ public class Carrello {
         this.utente = utente;
     }
 
-    public String getDataCreazione() {
+    public Date getDataCreazione() {
         return dataCreazione;
     }
 
-    public void setDataCreazione(String dataCreazione) {
+    public void setDataCreazione(Date dataCreazione) {
         this.dataCreazione = dataCreazione;
     }
 
-    public String getUltimoAggiornamento() {
+    public Date getUltimoAggiornamento() {
         return ultimoAggiornamento;
     }
 
-    public void setUltimoAggiornamento(String ultimoAggiornamento) {
+    public void setUltimoAggiornamento(Date ultimoAggiornamento) {
         this.ultimoAggiornamento = ultimoAggiornamento;
     }
 
@@ -62,10 +64,10 @@ public class Carrello {
     }
 }
 
-   // public Carrello(int utenteId) {
+// public Carrello(int utenteId) {
 
-      //  this.utenteId = utenteId;
+//  this.utenteId = utenteId;
 
-  //  }
+//  }
 
 

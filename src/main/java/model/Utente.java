@@ -1,15 +1,15 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Utente {
     private int id;
     Ruolo ruolo;
     private String nome, cognome, email, numero, indirizzo, password;
-    private LocalDateTime data_creazione;
-    private LocalDateTime data_ultima_modifica;
+    private Date data_creazione;
+    private Date data_ultima_modifica;
 
-    public Utente(int id, String nome, String cognome, String email, String numero, String indirizzo, Ruolo ruolo, String password, LocalDateTime data_creazione, LocalDateTime data_ultima_modifica) {
+    public Utente(int id, String nome, String cognome, String email, String numero, String indirizzo, Ruolo ruolo, String password, Date data_creazione, Date data_ultima_modifica) {
         this.id = id;
         this.ruolo = ruolo;
         this.nome = nome;
@@ -25,7 +25,7 @@ public class Utente {
     public Utente() {
     }
 
-    public Utente(Ruolo ruolo, String nome, String cognome, String email, String numero, String indirizzo, String password, LocalDateTime data_creazione, LocalDateTime data_ultima_modifica) {
+    public Utente(Ruolo ruolo, String nome, String cognome, String email, String numero, String indirizzo, String password, Date data_creazione, Date data_ultima_modifica) {
 
         this.ruolo = ruolo;
         this.nome = nome;
@@ -103,19 +103,19 @@ public class Utente {
         this.password = password;
     }
 
-    public LocalDateTime getData_creazione() {
+    public Date getData_creazione() {
         return data_creazione;
     }
 
-    public void setData_creazione(LocalDateTime data_creazione) {
+    public void setData_creazione(Date data_creazione) {
         this.data_creazione = data_creazione;
     }
 
-    public LocalDateTime getData_ultima_modifica() {
+    public Date getData_ultima_modifica() {
         return data_ultima_modifica;
     }
 
-    public void setData_ultima_modifica(LocalDateTime data_ultima_modifica) {
+    public void setData_ultima_modifica(Date data_ultima_modifica) {
         this.data_ultima_modifica = data_ultima_modifica;
     }
 

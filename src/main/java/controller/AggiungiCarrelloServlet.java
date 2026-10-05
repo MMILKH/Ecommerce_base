@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 
 @WebServlet("/aggiungiCarrello")
@@ -43,7 +42,7 @@ public class AggiungiCarrelloServlet extends HttpServlet {
             Carrello c = carrelloDao.findByUtenteId(u.getId());
             int qta = Integer.parseInt(request.getParameter("quantita"));
             Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
-            RigaCarrello r = new RigaCarrello(c, p, qta, LocalDateTime.now());
+            RigaCarrello r = new RigaCarrello(c, p, qta, new java.util.Date());
             rigaCarrelloDao.save(r);
         }
 

@@ -18,16 +18,31 @@ public class RigaCarrelloDao {
 
 
     public boolean save(RigaCarrello riga) {
+        Session session = null;
         Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.persist(riga);
             tx.commit();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            tx.rollback();
+
+            if (tx != null && tx.isActive()) {
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+
             return false;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
 
 
@@ -35,9 +50,11 @@ public class RigaCarrelloDao {
 
 
     public boolean delete(int carrelloId, int prodottoId) {
+        Session session = null;
         Transaction tx = null;
         String hql = "From RigaCarrello rc where rc.prodotto.id = :prodottoId and  rc.carrello.id = :carrelloId";
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             RigaCarrello rc = session.createQuery(hql, RigaCarrello.class).setParameter("carrelloId", carrelloId)
                     .setParameter("prodottoId", prodottoId).uniqueResult();
@@ -47,15 +64,26 @@ public class RigaCarrelloDao {
                 return true;
             } else {
                 System.out.println("Riga non trovata");
+                tx.commit();
+                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (tx != null) {
-                tx.rollback();
+            if (tx != null && tx.isActive()) {
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
             }
             return false;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
-        return false;
+
     }
 
 
@@ -75,26 +103,41 @@ public class RigaCarrelloDao {
 //    }
 
     public boolean updateQuantita(int carrelloId, int prodottoId, int nuovaQuantita) {
+        Session session = null;
         Transaction tx = null;
-        String hql = "From RigaCarrello rc Where rc.carrello.id = :carrelloId  and rc.prodotto.id = :prodottoId";
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        String hql = "FROM RigaCarrello rc WHERE rc.carrello.id = :carrelloId AND rc.prodotto.id = :prodottoId";
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            RigaCarrello rc = session.createQuery(hql, RigaCarrello.class).setParameter("carrelloId", carrelloId)
-                    .setParameter("prodottoId", prodottoId).uniqueResult();
+
+            RigaCarrello rc = session.createQuery(hql, RigaCarrello.class)
+                    .setParameter("carrelloId", carrelloId)
+                    .setParameter("prodottoId", prodottoId)
+                    .uniqueResult();
 
             if (rc != null) {
-
                 rc.setQuantita(nuovaQuantita);
             }
+
             tx.commit();
             return true;
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (tx != null) {
-                tx.rollback();
+            if (tx != null && tx.isActive()) {
+                try {
+                    tx.rollback();
+                } catch (Exception rbEx) {
+                    rbEx.printStackTrace();
+                }
             }
             return false;
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
     }
 }

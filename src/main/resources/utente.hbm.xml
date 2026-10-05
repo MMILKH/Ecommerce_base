@@ -13,7 +13,7 @@
         <property name="email" column="EMAIL" type="java.lang.String"/>
         <property name="numero" column="NUMERO" type="java.lang.String"/>
         <property name="indirizzo" column="INDIRIZZO" type="java.lang.String"/>
-        <property name="password" column="PASSWORD" type="java.lang.String"/>
+        <property name="password" column="PASSWORDU" type="java.lang.String"/>
         <property name="data_creazione" column="DATA_CREAZIONE" type="timestamp"/>
         <property name="data_ultima_modifica" column="DATA_ULTIMA_MODIFICA" type="timestamp"/>
 
