@@ -17,35 +17,47 @@ public class RigaCarrelloDao {
     }
 
 
-    public boolean save(RigaCarrello riga) {
+    public void save(RigaCarrello riga) {
         Session session = null;
         Transaction tx = null;
+
+
+        String hql = "FROM RigaCarrello rc WHERE rc.carrello.id = :carrelloId AND rc.prodotto.id = :prodottoId";
+
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            session.persist(riga);
+
+            RigaCarrello esistente = session.createQuery(hql, RigaCarrello.class)
+                    .setParameter("carrelloId", riga.getCarrello().getId())
+                    .setParameter("prodottoId", riga.getProdotto().getId())
+                    .uniqueResult();
+
+            if (esistente != null) {
+
+                esistente.setQuantita(esistente.getQuantita() + riga.getQuantita());
+                
+            } else {
+
+                session.persist(riga);
+            }
+
             tx.commit();
-            return true;
+
         } catch (Exception e) {
             e.printStackTrace();
-
             if (tx != null && tx.isActive()) {
                 try {
                     tx.rollback();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (Exception rbEx) {
+                    rbEx.printStackTrace();
                 }
-
             }
-
-            return false;
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
             }
         }
-
-
     }
 
 

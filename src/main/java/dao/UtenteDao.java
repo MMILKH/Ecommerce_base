@@ -64,8 +64,8 @@ public class UtenteDao {
             if (tx != null && tx.isActive()) {
                 try {
                     tx.rollback();
-                } catch (Exception rbEx) {
-                    rbEx.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
             return false;
