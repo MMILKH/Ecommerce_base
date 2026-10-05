@@ -13,7 +13,7 @@ public class DBConnection {
 
     public static Connection getConnection() throws SQLException {
         try {
-            // Carica il driver JDBC di Oracle
+
             Class.forName("oracle.jdbc.OracleDriver");
         } catch (ClassNotFoundException e) {
             System.err.println("Driver JDBC Oracle non trovato! Verificare le librerie del progetto.");

@@ -1,7 +1,9 @@
 package dao;
 
 import model.Prodotto;
+import org.hibernate.Session;
 import util.DBConnection;
+import util.HibernateUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,67 +15,18 @@ import java.util.List;
 public class ProdottoDao {
 
     public List<Prodotto> findAll() {
-        List<Prodotto> prodotti = new ArrayList<>();
-        String sql = "SELECT * FROM prodotto ORDER BY id";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            while (rs.next()) {
-                Prodotto p = new Prodotto(
-                        rs.getInt("id"),
-                        rs.getString("sku"),
-                        rs.getString("nome"),
-                        rs.getString("descrizioneb"),
-                        rs.getString("descrizionee"),
-                        rs.getDouble("prezzo"),
-                        rs.getString("immagine"),
-                        rs.getString("categoria"),
-                        rs.getInt("disponibilita"),
-                        rs.getInt("stato_pub")
-                );
-                prodotti.add(p);
-            }
-
-        } catch (SQLException e) {
+        String hql = "FROM Prodotto";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Prodotto.class).list();
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
-        return prodotti;
     }
 
     public Prodotto findById(int id) {
-        String sql = "SELECT * FROM prodotto WHERE id = ?";
-        Prodotto prodotto = null;
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, id);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    prodotto = new Prodotto(
-                            rs.getInt("id"),
-                            rs.getString("sku"),
-                            rs.getString("nome"),
-                            rs.getString("descrizioneb"),
-                            rs.getString("descrizionee"),
-                            rs.getDouble("prezzo"),
-                            rs.getString("immagine"),
-                            rs.getString("categoria"),
-                            rs.getInt("disponibilita"),
-                            rs.getInt("stato_pub")
-                    );
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return prodotto;
     }
 
     public boolean save(Prodotto prodotto) {
@@ -109,7 +62,7 @@ public class ProdottoDao {
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, categoria);
+            pstmt.setString(1, categoria);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Prodotto p = new Prodotto(
@@ -129,7 +82,7 @@ public class ProdottoDao {
 
                 }
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return prodotti;

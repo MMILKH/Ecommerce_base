@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Utente" table="UTENTE">
+        <id name="id" column="ID" type="int">
+            <generator class="native"/>
+        </id>
+
+        <property name="nome" column="NOME" type="java.lang.String"/>
+        <property name="cognome" column="COGNOME" type="java.lang.String"/>
+        <property name="email" column="EMAIL" type="java.lang.String"/>
+        <property name="numero" column="NUMERO" type="java.lang.String"/>
+        <property name="indirizzo" column="INDIRIZZO" type="java.lang.String"/>
+        <property name="password" column="PASSWORD" type="java.lang.String"/>
+        <property name="data_creazione" column="DATA_CREAZIONE" type="timestamp"/>
+        <property name="data_ultima_modifica" column="DATA_ULTIMA_MODIFICA" type="timestamp"/>
+
+        <many-to-one name="ruolo" class="model.Ruolo">
+            <column name="RUOLO_ID"/>
+        </many-to-one>
+
+    </class>
+
+
+</hibernate-mapping>

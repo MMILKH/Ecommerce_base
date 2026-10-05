@@ -2,32 +2,31 @@ package model;
 
 public class RigaCarrello {
     private int id;
-    private int carrelloId;
-    private int prodottoId;
+    private Carrello carrello;
+    private Prodotto prodotto;
     private int quantita;
     private String dataCreazione;
 
 
-    public RigaCarrello() {}
+    public RigaCarrello() {
+    }
 
 
-    public RigaCarrello(int id, int carrelloId, int prodottoId, int quantita, String dataCreazione) {
+    public RigaCarrello(int id, Carrello carrello, Prodotto prodotto, int quantita, String dataCreazione) {
         this.id = id;
-        this.carrelloId = carrelloId;
-        this.prodottoId = prodottoId;
+        this.carrello = carrello;
+        this.prodotto = prodotto;
         this.quantita = quantita;
         this.dataCreazione = dataCreazione;
     }
 
 
-    public RigaCarrello(int carrelloId, int prodottoId, int quantita, String dataCreazione) {
-        this.carrelloId = carrelloId;
-        this.prodottoId = prodottoId;
+    public RigaCarrello(Carrello carrello, Prodotto prodotto, int quantita, String dataCreazione) {
+        this.carrello = carrello;
+        this.prodotto = prodotto;
         this.quantita = quantita;
         this.dataCreazione = dataCreazione;
     }
-
-
 
 
     public int getId() {
@@ -38,20 +37,20 @@ public class RigaCarrello {
         this.id = id;
     }
 
-    public int getCarrelloId() {
-        return carrelloId;
+    public Carrello getCarrello() {
+        return carrello;
     }
 
-    public void setCarrelloId(int carrelloId) {
-        this.carrelloId = carrelloId;
+    public void setCarrello(Carrello carrello) {
+        this.carrello = carrello;
     }
 
-    public int getProdottoId() {
-        return prodottoId;
+    public Prodotto getProdotto() {
+        return prodotto;
     }
 
-    public void setProdottoId(int prodottoId) {
-        this.prodottoId = prodottoId;
+    public void setProdotto(Prodotto prodotto) {
+        this.prodotto = prodotto;
     }
 
     public int getQuantita() {
@@ -68,16 +67,5 @@ public class RigaCarrello {
 
     public void setDataCreazione(String dataCreazione) {
         this.dataCreazione = dataCreazione;
-    }
-
-    @Override
-    public String toString() {
-        return "RigaCarrello{" +
-                "id=" + id +
-                ", carrelloId=" + carrelloId +
-                ", prodottoId=" + prodottoId +
-                ", quantita=" + quantita +
-                ", dataCreazione='" + dataCreazione + '\'' +
-                '}';
     }
 }

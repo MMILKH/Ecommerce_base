@@ -1,14 +1,17 @@
 package model;
 
-import javax.print.DocFlavor;
+import java.time.LocalDateTime;
 
 public class Utente {
-    private int id, ruoloId;
-    private String nome, cognome, email,numero, indirizzo, password,data_creazione, data_ultima_modifica;
+    private int id;
+    Ruolo ruolo;
+    private String nome, cognome, email, numero, indirizzo, password;
+    private LocalDateTime data_creazione;
+    private LocalDateTime data_ultima_modifica;
 
-    public Utente(int id, String nome, String cognome, String email, String numero, String indirizzo,int ruoloId, String password, String data_creazione, String data_ultima_modifica) {
+    public Utente(int id, String nome, String cognome, String email, String numero, String indirizzo, Ruolo ruolo, String password, LocalDateTime data_creazione, LocalDateTime data_ultima_modifica) {
         this.id = id;
-        this.ruoloId = ruoloId;
+        this.ruolo = ruolo;
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -18,11 +21,13 @@ public class Utente {
         this.data_creazione = data_creazione;
         this.data_ultima_modifica = data_ultima_modifica;
     }
-    public Utente(){}
 
-    public Utente( int ruoloId, String nome, String cognome, String email, String numero, String indirizzo, String password, String data_creazione, String data_ultima_modifica) {
+    public Utente() {
+    }
 
-        this.ruoloId = ruoloId;
+    public Utente(Ruolo ruolo, String nome, String cognome, String email, String numero, String indirizzo, String password, LocalDateTime data_creazione, LocalDateTime data_ultima_modifica) {
+
+        this.ruolo = ruolo;
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -34,12 +39,12 @@ public class Utente {
 
     }
 
-    public int getRuoloId() {
-        return ruoloId;
+    public Ruolo getRuolo() {
+        return ruolo;
     }
 
-    public void setRuoloId(int ruoloId) {
-        this.ruoloId = ruoloId;
+    public void setRuoloId(Ruolo ruolo) {
+        this.ruolo = ruolo;
     }
 
     public int getId() {
@@ -98,19 +103,19 @@ public class Utente {
         this.password = password;
     }
 
-    public String getData_creazione() {
+    public LocalDateTime getData_creazione() {
         return data_creazione;
     }
 
-    public void setData_creazione(String data_creazione) {
+    public void setData_creazione(LocalDateTime data_creazione) {
         this.data_creazione = data_creazione;
     }
 
-    public String getData_ultima_modifica() {
+    public LocalDateTime getData_ultima_modifica() {
         return data_ultima_modifica;
     }
 
-    public void setData_ultima_modifica(String data_ultima_modifica) {
+    public void setData_ultima_modifica(LocalDateTime data_ultima_modifica) {
         this.data_ultima_modifica = data_ultima_modifica;
     }
 
@@ -118,7 +123,7 @@ public class Utente {
     public String toString() {
         return "Utente{" +
                 "id=" + id +
-                ", ruoloId=" + ruoloId +
+                ", ruolo=" + ruolo +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
                 ", email='" + email + '\'' +

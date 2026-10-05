@@ -3,28 +3,21 @@ package model;
 
 public class Carrello {
     private int id;
-    private int utenteId;
+    private Utente utente;
     private String dataCreazione;
     private String ultimoAggiornamento;
 
 
-    public Carrello() {}
+    public Carrello() {
+    }
 
 
-    public Carrello(int id, int utenteId, String dataCreazione, String ultimoAggiornamento) {
+    public Carrello(int id, Utente utente, String dataCreazione, String ultimoAggiornamento) {
         this.id = id;
-        this.utenteId = utenteId;
+        this.utente = new Utente();
         this.dataCreazione = dataCreazione;
         this.ultimoAggiornamento = ultimoAggiornamento;
     }
-
-
-    public Carrello(int utenteId) {
-
-        this.utenteId = utenteId;
-
-    }
-
 
     public int getId() {
         return id;
@@ -34,12 +27,12 @@ public class Carrello {
         this.id = id;
     }
 
-    public int getUtenteId() {
-        return utenteId;
+    public Utente getUtente() {
+        return utente;
     }
 
-    public void setUtenteId(int utenteId) {
-        this.utenteId = utenteId;
+    public void setUtente(Utente utente) {
+        this.utente = utente;
     }
 
     public String getDataCreazione() {
@@ -62,11 +55,17 @@ public class Carrello {
     public String toString() {
         return "Carrello{" +
                 "id=" + id +
-                ", utenteId=" + utenteId +
+                ", utente=" + utente +
                 ", dataCreazione='" + dataCreazione + '\'' +
                 ", ultimoAggiornamento='" + ultimoAggiornamento + '\'' +
                 '}';
     }
-
-
 }
+
+   // public Carrello(int utenteId) {
+
+      //  this.utenteId = utenteId;
+
+  //  }
+
+
