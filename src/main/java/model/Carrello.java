@@ -8,17 +8,26 @@ public class Carrello {
     private Utente utente;
     private Date dataCreazione;
     private Date ultimoAggiornamento;
+    private String stato;
 
 
     public Carrello() {
     }
 
 
-    public Carrello(int id, Utente utente, Date dataCreazione, Date ultimoAggiornamento) {
+    public Carrello(int id, Utente utente, Date dataCreazione, Date ultimoAggiornamento, String stato) {
         this.id = id;
         this.utente = new Utente();
         this.dataCreazione = dataCreazione;
         this.ultimoAggiornamento = ultimoAggiornamento;
+        this.stato = stato;
+    }
+
+    public Carrello(Utente utente, Date dataCreazione, Date ultimoAggiornamento, String stato) {
+        this.utente = new Utente();
+        this.dataCreazione = dataCreazione;
+        this.ultimoAggiornamento = ultimoAggiornamento;
+        this.stato = stato;
     }
 
     public int getId() {
@@ -51,6 +60,14 @@ public class Carrello {
 
     public void setUltimoAggiornamento(Date ultimoAggiornamento) {
         this.ultimoAggiornamento = ultimoAggiornamento;
+    }
+
+    public String getStato() {
+        return stato;
+    }
+
+    public void setStato(String stato) {
+        this.stato = stato;
     }
 
     @Override

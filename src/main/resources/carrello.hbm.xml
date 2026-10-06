@@ -9,12 +9,14 @@
         </id>
 
 
-        <property name="dataCreazione" column="DATA_CREAZIONE" type="timestamp"/>
-        <property name="ultimoAggiornamento" column="ULTIMO_AGGIORNAMENTO" type="timestamp"/>
+        <property name="dataCreazione" column="DATA_CREAZIONE" type="timestamp" not-null="true"/>
+        <property name="ultimoAggiornamento" column="ULTIMO_AGGIORNAMENTO" type="timestamp" not-null="true"/>
+        <property name="stato" column="STATO" type="java.lang.String" not-null="true"/>
 
-        <many-to-one name="utente" class="model.Utente">
+        <many-to-one name="utente" class="model.Utente" not-null="true">
             <column name="UTENTE_ID"/>
         </many-to-one>
+
 
     </class>
 

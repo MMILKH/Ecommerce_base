@@ -45,7 +45,7 @@ public class UtenteDao {
         }
     }
 
-    public boolean save(Utente utente) {
+    public int save(Utente utente) {
         Session session = null;
         Transaction tx = null;
         try {
@@ -54,10 +54,11 @@ public class UtenteDao {
 
             utente.setData_creazione(new java.util.Date());
             utente.setData_ultima_modifica(new java.util.Date());
-
             session.persist(utente);
+
+
             tx.commit();
-            return true;
+            return utente.getId();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +69,7 @@ public class UtenteDao {
                     ex.printStackTrace();
                 }
             }
-            return false;
+            return 0;
 
         } finally {
             if (session != null && session.isOpen()) {

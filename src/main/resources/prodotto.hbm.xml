@@ -8,15 +8,15 @@
             <generator class="native"/>
         </id>
 
-        <property name="nome" column="NOME" type="java.lang.String"/>
-        <property name="sku" column="SKU" type="java.lang.String"/>
-        <property name="descrizioneBreve" column="DESCRIZIONEB" type="java.lang.String"/>
-        <property name="descrizioneEstesa" column="DESCRIZIONEE" type="java.lang.String"/>
-        <property name="immagine" column="IMMAGINE" type="java.lang.String"/>
-        <property name="categoria" column="CATEGORIA" type="java.lang.String"/>
-        <property name="prezzo" column="PREZZO" type="double"/>
-        <property name="statoPub" column="STATO_PUB" type="int"/>
-        <property name="disponibilita" column="DISPONIBILITA" type="int"/>
+        <property name="nome" column="NOME" type="java.lang.String" not-null="true"/>
+        <property name="sku" column="SKU" type="java.lang.String" not-null="true" unique="true"/>
+        <property name="descrizioneBreve" column="DESCRIZIONEB" type="java.lang.String" not-null="true"/>
+        <property name="descrizioneEstesa" column="DESCRIZIONEE" type="java.lang.String" not-null="true"/>
+        <property name="immagine" column="IMMAGINE" type="java.lang.String" not-null="true"/>
+        <property name="categoria" column="CATEGORIA" type="java.lang.String" not-null="true"/>
+        <property name="prezzo" column="PREZZO" type="double" not-null="true"/>
+        <property name="statoPub" column="STATO_PUB" type="int" not-null="true"/>
+        <property name="disponibilita" column="DISPONIBILITA" type="int" not-null="true"/>
 
 
     </class>

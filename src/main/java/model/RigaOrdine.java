@@ -1,35 +1,39 @@
 package model;
 
+import java.util.Date;
+
 public class RigaOrdine {
     private int id;
-    private int ordineId;
-    private int prodottoId;
-    private String sku;
-    private String nomeProdotto;
+    private Ordine ordine;
+    private Prodotto prodotto;
     private int quantita;
-    private double prezzoUnitario;
     private double prezzoRiga;
+    private double prezzoUnitario;
+    private int rigaCarrelloId;
+    private Date dataCreazione;
 
     public RigaOrdine() {
     }
 
-    public RigaOrdine(int id, int ordineId, int prodottoId, String sku, String nomeProdotto, int quantita, double prezzoUnitario, double prezzoRiga) {
+    public RigaOrdine(int id, Ordine ordine, Prodotto prodotto, int quantita, double prezzoRiga, int rigaCarrelloId, Date dataCreazione, double prezzoUnitario) {
         this.id = id;
-        this.ordineId = ordineId;
-        this.prodottoId = prodottoId;
-        this.sku = sku;
-        this.nomeProdotto = nomeProdotto;
+        this.ordine = ordine;
+        this.prodotto = prodotto;
         this.quantita = quantita;
-        this.prezzoUnitario = prezzoUnitario;
         this.prezzoRiga = prezzoRiga;
+        this.rigaCarrelloId = rigaCarrelloId;
+        this.dataCreazione = dataCreazione;
+        this.prezzoUnitario = prezzoUnitario;
     }
 
-    public RigaOrdine(int ordineId, int prodottoId, int quantita, double prezzoUnitario, double prezzoRiga) {
-        this.ordineId = ordineId;
-        this.prodottoId = prodottoId;
+    public RigaOrdine(Ordine ordine, Prodotto prodotto, int quantita, double prezzoRiga, int rigaCarrelloId, Date dataCreazione, double prezzoUnitario) {
+        this.ordine = ordine;
+        this.prodotto = prodotto;
         this.quantita = quantita;
-        this.prezzoUnitario = prezzoUnitario;
         this.prezzoRiga = prezzoRiga;
+        this.rigaCarrelloId = rigaCarrelloId;
+        this.dataCreazione = dataCreazione;
+        this.prezzoUnitario = prezzoUnitario;
     }
 
     public int getId() {
@@ -40,36 +44,20 @@ public class RigaOrdine {
         this.id = id;
     }
 
-    public int getOrdineId() {
-        return ordineId;
+    public Ordine getOrdine() {
+        return ordine;
     }
 
-    public void setOrdineId(int ordineId) {
-        this.ordineId = ordineId;
+    public void setOrdine(Ordine ordine) {
+        this.ordine = ordine;
     }
 
-    public int getProdottoId() {
-        return prodottoId;
+    public Prodotto getProdotto() {
+        return prodotto;
     }
 
-    public void setProdottoId(int prodottoId) {
-        this.prodottoId = prodottoId;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getNomeProdotto() {
-        return nomeProdotto;
-    }
-
-    public void setNomeProdotto(String nomeProdotto) {
-        this.nomeProdotto = nomeProdotto;
+    public void setProdotto(Prodotto prodotto) {
+        this.prodotto = prodotto;
     }
 
     public int getQuantita() {
@@ -80,14 +68,6 @@ public class RigaOrdine {
         this.quantita = quantita;
     }
 
-    public double getPrezzoUnitario() {
-        return prezzoUnitario;
-    }
-
-    public void setPrezzoUnitario(double prezzoUnitario) {
-        this.prezzoUnitario = prezzoUnitario;
-    }
-
     public double getPrezzoRiga() {
         return prezzoRiga;
     }
@@ -96,17 +76,41 @@ public class RigaOrdine {
         this.prezzoRiga = prezzoRiga;
     }
 
+    public int getRigaCarrelloId() {
+        return rigaCarrelloId;
+    }
+
+    public void setRigaCarrelloId(int rigaCarrelloId) {
+        this.rigaCarrelloId = rigaCarrelloId;
+    }
+
+    public Date getDataCreazione() {
+        return dataCreazione;
+    }
+
+    public void setDataCreazione(Date dataCreazione) {
+        this.dataCreazione = dataCreazione;
+    }
+
+    public double getPrezzoUnitario() {
+        return prezzoUnitario;
+    }
+
+    public void setPrezzoUnitario(double prezzoUnitario) {
+        this.prezzoUnitario = prezzoUnitario;
+    }
+
     @Override
     public String toString() {
         return "RigaOrdine{" +
                 "id=" + id +
-                ", ordineId=" + ordineId +
-                ", prodottoId=" + prodottoId +
-                ", sku='" + sku + '\'' +
-                ", nomeProdotto='" + nomeProdotto + '\'' +
+                ", ordine=" + ordine +
+                ", prodotto=" + prodotto +
                 ", quantita=" + quantita +
-                ", prezzoUnitario=" + prezzoUnitario +
                 ", prezzoRiga=" + prezzoRiga +
+                ", prezzoUnitario=" + prezzoUnitario +
+                ", rigaCarrelloId=" + rigaCarrelloId +
+                ", dataCreazione=" + dataCreazione +
                 '}';
     }
 }

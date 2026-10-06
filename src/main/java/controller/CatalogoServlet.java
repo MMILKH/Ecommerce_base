@@ -1,8 +1,8 @@
 package controller;
+
 import dao.ProdottoDao;
 import model.Prodotto;
 import model.Utente;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,12 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet ("/catalogo")
+@WebServlet("/catalogo")
 public class CatalogoServlet extends HttpServlet {
     private ProdottoDao prodottoDao;
 
@@ -35,15 +33,15 @@ public class CatalogoServlet extends HttpServlet {
         }
 
         String categoria = request.getParameter("categoria");
-        System.out.println("CATEGORIA " + categoria );
+
         List<Prodotto> prodotti;
 
 
         if (categoria == null || categoria.isEmpty()) {
             prodotti = prodottoDao.findAll();
-            System.out.println("IF");
+
         } else {
-            System.out.println("else");
+
             prodotti = prodottoDao.findByCategoria(categoria);
         }
 

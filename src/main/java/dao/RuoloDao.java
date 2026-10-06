@@ -26,4 +26,16 @@ public class RuoloDao {
         }
         return null;
     }
+
+
+    public Ruolo findByNome(String nome) {
+        String hql = "FROM Ruolo r WHERE r.nome = :nome";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(hql,Ruolo.class).setParameter("nome", nome).uniqueResult();
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        return null;
+    }
 }

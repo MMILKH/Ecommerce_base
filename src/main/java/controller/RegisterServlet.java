@@ -1,7 +1,9 @@
 package controller;
 
 import dao.CarrelloDao;
+import dao.RuoloDao;
 import dao.UtenteDao;
+import model.Carrello;
 import model.Utente;
 import util.Password;
 
@@ -20,11 +22,13 @@ public class RegisterServlet extends HttpServlet {
 
     UtenteDao utenteDao = new UtenteDao();
     CarrelloDao carrelloDao = new CarrelloDao();
+    RuoloDao ruoloDao = new RuoloDao();
 
     @Override
     public void init() throws ServletException {
         this.utenteDao = new UtenteDao();
         this.carrelloDao = new CarrelloDao();
+        this.ruoloDao = new RuoloDao();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,7 +39,8 @@ public class RegisterServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utente utente = new Utente();
-
+        Utente temp = null;
+        int id = 0;
         String nome = request.getParameter("nome");
         String cognome = request.getParameter("cognome");
         String email = request.getParameter("email");
@@ -58,9 +63,18 @@ public class RegisterServlet extends HttpServlet {
             utente.setNumero(numero);
             utente.setIndirizzo(indirizzo);
             utente.setPassword(password);
+            utente.setRuolo(ruoloDao.findByNome("customer"));
+            id = utenteDao.save(utente);
+            if (id != 0) {
+                Carrello carrello = new Carrello();
+                temp = utenteDao.findById(id);
+                carrello.setUtente(temp);
+                carrello.setDataCreazione(new java.util.Date());
+                carrello.setUltimoAggiornamento(new java.util.Date());
+                carrelloDao.save(carrello);
 
-            if (utenteDao.save(utente)) {
                 response.sendRedirect(request.getContextPath() + "/login");
+
             }
 
         } else {

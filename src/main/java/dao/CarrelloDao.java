@@ -43,4 +43,24 @@ public class CarrelloDao {
             }
         }
     }
+
+
+    public void updateUltimoAggiornamento(Carrello carrello) {
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.merge(carrello);
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
 }

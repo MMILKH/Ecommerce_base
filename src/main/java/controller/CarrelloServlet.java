@@ -100,6 +100,10 @@ public class CarrelloServlet extends HttpServlet {
                     Carrello c = carrelloDao.findByUtenteId(u.getId());
                     Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
                     rigaCarrelloDao.updateQuantita(c.getId(), p.getId(), Integer.parseInt(request.getParameter("quantita")));
+                    int id = u.getId();
+                    Carrello carrello = carrelloDao.findByUtenteId(id);
+                    carrello.setUltimoAggiornamento(new java.util.Date());
+                    carrelloDao.updateUltimoAggiornamento(carrello);
                     response.sendRedirect(request.getContextPath() + "/carrello");
                     break;
                 }
@@ -109,6 +113,10 @@ public class CarrelloServlet extends HttpServlet {
                     Carrello c = carrelloDao.findByUtenteId(u.getId());
                     Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
                     rigaCarrelloDao.delete(c.getId(), p.getId());
+                    int id = u.getId();
+                    Carrello carrello = carrelloDao.findByUtenteId(id);
+                    carrello.setUltimoAggiornamento(new java.util.Date());
+                    carrelloDao.updateUltimoAggiornamento(carrello);
                     response.sendRedirect(request.getContextPath() + "/carrello");
                     break;
                 }

@@ -8,9 +8,9 @@
             <generator class="native"/>
         </id>
 
-        <property name="nome" column="NOME" type="java.lang.String"/>
-        <property name="codice" column="CODICE" type="java.lang.String"/>
-        <property name="descrizione" column="DESCRIZIONE" type="java.lang.String"/>
+        <property name="nome" column="NOME" type="java.lang.String" not-null="true"/>
+        <property name="codice" column="CODICE" type="java.lang.String" not-null="true"/>
+        <property name="descrizione" column="DESCRIZIONE" type="java.lang.String" not-null="true"/>
 
 
     </class>

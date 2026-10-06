@@ -8,18 +8,19 @@
             <generator class="native"/>
         </id>
 
-        <property name="nome" column="NOME" type="java.lang.String"/>
-        <property name="cognome" column="COGNOME" type="java.lang.String"/>
-        <property name="email" column="EMAIL" type="java.lang.String"/>
-        <property name="numero" column="NUMERO" type="java.lang.String"/>
+        <property name="nome" column="NOME" type="java.lang.String" not-null="true"/>
+        <property name="cognome" column="COGNOME" type="java.lang.String" not-null="true"/>
+        <property name="email" column="EMAIL" type="java.lang.String" not-null="true" unique="true"/>
+        <property name="numero" column="NUMERO" type="java.lang.String" not-null="true"/>
         <property name="indirizzo" column="INDIRIZZO" type="java.lang.String"/>
-        <property name="password" column="PASSWORDU" type="java.lang.String"/>
-        <property name="data_creazione" column="DATA_CREAZIONE" type="timestamp"/>
-        <property name="data_ultima_modifica" column="DATA_ULTIMA_MODIFICA" type="timestamp"/>
+        <property name="password" column="PASSWORDU" type="java.lang.String" not-null="true"/>
+        <property name="data_creazione" column="DATA_CREAZIONE" type="timestamp" not-null="true"/>
+        <property name="data_ultima_modifica" column="DATA_ULTIMA_MODIFICA" type="timestamp" not-null="true"/>
 
-        <many-to-one name="ruolo" class="model.Ruolo">
+        <many-to-one name="ruolo" class="model.Ruolo" not-null="true">
             <column name="RUOLO_ID"/>
         </many-to-one>
+
 
     </class>
 

@@ -8,16 +8,18 @@
             <generator class="native"/>
         </id>
 
-        <property name="quantita" column="QUANTITA" type="int"/>
+        <property name="quantita" column="QUANTITA" type="int" not-null="true"/>
 
-        <property name="dataCreazione" column="DATA_CREAZIONE" type="timestamp"/>
+        <property name="dataCreazione" column="DATA_CREAZIONE" type="timestamp" not-null="true"/>
 
-        <many-to-one name="carrello" class="model.Carrello">
+        <property name="ultimaModifica" column="DATA_ULTIMA_MODIFICA" type="timestamp" not-null="true"/>
+
+        <many-to-one name="carrello" class="model.Carrello" not-null="true">
             <column name="CARRELLO_ID"/>
         </many-to-one>
 
 
-        <many-to-one name="prodotto" class="model.Prodotto">
+        <many-to-one name="prodotto" class="model.Prodotto" not-null="true">
             <column name="PRODOTTO_ID"/>
         </many-to-one>
 
