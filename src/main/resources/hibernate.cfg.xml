@@ -19,6 +19,8 @@
         <mapping resource="carrello.hbm.xml"/>
         <mapping resource="prodotto.hbm.xml"/>
         <mapping resource="riga_carrello.hbm.xml"/>
+        <mapping resource="ordine.hbm.xml"/>
+        <mapping resource="riga_ordine.hbm.xml"/>
 
 
     </session-factory>

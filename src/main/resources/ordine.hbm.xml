@@ -3,18 +3,23 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.Carrello" table="CARRELLO">
+    <class name="model.Ordine" table="ORDINE">
         <id name="id" column="ID" type="int">
-            <generator class="native"/>
+            <generator class="identity"/>
         </id>
 
 
         <property name="dataCreazione" column="DATA_CREAZIONE" type="timestamp" not-null="true"/>
-        <property name="ultimoAggiornamento" column="ULTIMO_AGGIORNAMENTO" type="timestamp" not-null="true"/>
-        <property name="stato" column="STATO" type="java.lang.String" not-null="true"/>
+        <property name="indirizzoFatturazione" column="INDIRIZZO_FATTURAZIONE" type="java.lang.String"/>
+        <property name="indirizzoSpedizione" column="INDIRIZZO_SPEDIZIONE" type="java.lang.String" not-null="true"/>
+        <property name="importoTotale" column="IMPORTO" type="big_decimal" not-null="true"/>
+        <property name="codice" column="CODICE" type="java.lang.String" not-null="true" unique="true"/>
 
         <many-to-one name="utente" class="model.Utente" not-null="true">
             <column name="UTENTE_ID"/>
+        </many-to-one>
+        <many-to-one name="stato" class="model.Stato" not-null="true">
+            <column name="STATO_ID"/>
         </many-to-one>
 
 

@@ -39,15 +39,11 @@ public class AggiungiCarrelloServlet extends HttpServlet {
         if (session != null) {
             u = (Utente) session.getAttribute("utenteLoggato");
 
-            Carrello c = carrelloDao.findByUtenteId(u.getId());
+            Carrello c = carrelloDao.findNewByUtenteId(u.getId());
             int qta = Integer.parseInt(request.getParameter("quantita"));
             Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
-            RigaCarrello r = new RigaCarrello(c, p, qta, new java.util.Date());
+            RigaCarrello r = new RigaCarrello(c, p, qta, new java.util.Date(), new java.util.Date());
             rigaCarrelloDao.save(r);
-            int id = u.getId();
-            Carrello carrello = carrelloDao.findByUtenteId(id);
-            carrello.setUltimoAggiornamento(new java.util.Date());
-            carrelloDao.updateUltimoAggiornamento(carrello);
 
         }
 

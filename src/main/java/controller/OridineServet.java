@@ -1,117 +1,109 @@
-//package controller;
-//
-//
-//import dao.*;
-//import model.*;
-//
-//import javax.servlet.ServletException;
-//import javax.servlet.annotation.WebServlet;
-//import javax.servlet.http.HttpServlet;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import javax.servlet.http.HttpSession;
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//@WebServlet("/ordine")
-//public class OridineServet extends HttpServlet {
-//
-//    CarrelloDao carrelloDao;
-//    ProdottoDao prodottoDao;
-//    RigaCarrelloDao rigaCarrelloDao;
-//    OrdineDao ordineDao;
-//    RigaOrdineDao rigaOrdineDao;
-//
-//    @Override
-//    public void init() {
-//        carrelloDao = new CarrelloDao();
-//        prodottoDao = new ProdottoDao();
-//        rigaCarrelloDao = new RigaCarrelloDao();
-//        ordineDao = new OrdineDao();
-//        rigaOrdineDao = new RigaOrdineDao();
-//
-//    }
-//
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-//        response.setDateHeader("Expires", 0);
-//        HttpSession session = request.getSession();
-//        Utente u = null;
-//        if (session == null || session.getAttribute("utenteLoggato") == null) {
-//            response.sendRedirect(request.getContextPath() + "/login");
-//        } else {
-//            u = (Utente) session.getAttribute("utenteLoggato");
-//        }
-//
-//        double totale = 0;
-//
-//        Carrello c = carrelloDao.findByUtenteId(u.getId());
-//        List<RigaOrdine> righe = rigaOrdineDao.findByOrdineId(c.getId());
-//        List<Prodotto> prodotti = new ArrayList<>();
-//        Map<Integer, Integer> quantitaxprodotto = new HashMap<>();
-//        for (RigaOrdine r : righe) {
-//
-//            quantitaxprodotto.put((Integer) r.getProdottoId(), (Integer) r.getQuantita());
-//            Prodotto p = prodottoDao.findById(r.getProdottoId());
-//            prodotti.add(p);
-//
-//            totale += r.getPrezzoRiga();
-//
-//        }
-//        request.setAttribute("listaProdotti", prodotti);
-//        request.setAttribute("listaQuantita", quantitaxprodotto);
-//        request.setAttribute("listaRighe", righe);
-//        request.setAttribute("totale", totale);
-//
-//        request.getRequestDispatcher("/ordine.jsp").forward(request, response);
-//
-//    }
-//
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//        HttpSession session = request.getSession();
-//        Utente u = null;
-//        double totale = 0;
-//        Ordine ordine = null;
-//
-//        if (session == null || session.getAttribute("utenteLoggato") == null) {
-//            response.sendRedirect(request.getContextPath() + "/login");
-//        } else {
-//            u = (Utente) session.getAttribute("utenteLoggato");
-//        }
-//
-//        Carrello c = carrelloDao.findByUtenteId(u.getId());
-//        List<RigaCarrello> righe = rigaCarrelloDao.findByCarrelloId(c.getId());
-//        List<Prodotto> prodotti = new ArrayList<>();
-//
-//        Map<Integer, Integer> map = new HashMap<>();
-//
-//        for (RigaCarrello r : righe) {
-//            Prodotto p = prodottoDao.findById(r.getProdottoId());
-//            prodotti.add(p);
-//            map.put((Integer) p.getId(), (Integer) r.getQuantita());
-//            totale += p.getPrezzo() * r.getQuantita();
-//        }
-//
-//        ordine = new Ordine(u.getId(), 1, totale, request.getParameter("indirizzoS"), "");
-//        ordineDao.save(ordine);
-//
-//        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-//            Prodotto p = prodottoDao.findById(entry.getKey());
-//            int qta = entry.getValue();
-//            RigaOrdine r = new RigaOrdine(ordine.getId(), p.getId(), qta, p.getPrezzo(), p.getPrezzo() * qta);
-//            rigaOrdineDao.save(r);
-//        }
-//
-//
-//        response.sendRedirect(request.getContextPath() + "/ordine");
-//
-//
-//    }
-//
-//}
-//
+package controller;
+
+
+import dao.*;
+import model.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+
+@WebServlet("/ordine")
+public class OridineServet extends HttpServlet {
+
+    CarrelloDao carrelloDao;
+    ProdottoDao prodottoDao;
+    RigaCarrelloDao rigaCarrelloDao;
+    OrdineDao ordineDao;
+    RigaOrdineDao rigaOrdineDao;
+    StatoDao statoDao;
+
+    @Override
+    public void init() {
+        carrelloDao = new CarrelloDao();
+        prodottoDao = new ProdottoDao();
+        rigaCarrelloDao = new RigaCarrelloDao();
+        ordineDao = new OrdineDao();
+        rigaOrdineDao = new RigaOrdineDao();
+        statoDao = new StatoDao();
+
+    }
+
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        Utente u = null;
+        Ordine o = new Ordine();
+
+        if (session == null || session.getAttribute("utenteLoggato") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+        } else {
+            u = (Utente) session.getAttribute("utenteLoggato");
+
+
+            BigDecimal totale = BigDecimal.valueOf(0);
+            Carrello c = carrelloDao.findNewByUtenteId(u.getId());
+            Stato s = statoDao.findById(1);
+            List<RigaCarrello> righeC = rigaCarrelloDao.findByCarrelloId(c.getId());
+            o.setDataCreazione(new java.util.Date());
+            double temp = Double.parseDouble(request.getParameter("totale"));
+            totale = BigDecimal.valueOf(temp);
+            o.setImportoTotale(totale);
+            o.setUtente(u);
+            o.setStato(s);
+            String indirizzoS = request.getParameter("indirizzoS");
+            String indirizzoF = request.getParameter("indirizzoF");
+            if (indirizzoF == null) {
+                indirizzoF = "";
+                o.setIndirizzoFatturazione(indirizzoF);
+            } else {
+                o.setIndirizzoFatturazione(indirizzoF);
+            }
+
+            o.setIndirizzoSpedizione(indirizzoS);
+            o.setCodice(UUID.randomUUID().toString());
+
+            ordineDao.save(o);
+            BigDecimal temp2;
+
+            for (RigaCarrello r : righeC) {
+                temp2 = BigDecimal.valueOf(0);
+                RigaOrdine rO = new RigaOrdine();
+                rO.setOrdine(o);
+                temp2 = r.getProdotto().getPrezzo().multiply(BigDecimal.valueOf(r.getQuantita()));
+                rO.setPrezzoRiga(temp2);
+                rO.setProdotto(r.getProdotto());
+                rO.setDataCreazione(new java.util.Date());
+                rO.setQuantita(r.getQuantita());
+                rO.setRigaCarrelloId(r.getId());
+                rO.setPrezzoUnitario(r.getProdotto().getPrezzo());
+                rigaOrdineDao.save(rO);
+                rigaCarrelloDao.updateUltimaModifica(r.getId());
+
+            }
+
+            carrelloDao.updateStato(c.getId());
+            Carrello carrelloNew = new Carrello();
+            carrelloNew.setUtente(u);
+            carrelloNew.setStato("NEW");
+            carrelloNew.setDataCreazione(new java.util.Date());
+            carrelloNew.setUltimoAggiornamento(new java.util.Date());
+            carrelloDao.save(carrelloNew);
+
+        }
+        response.sendRedirect(request.getContextPath() + "/catalogo");
+
+
+    }
+
+}
+

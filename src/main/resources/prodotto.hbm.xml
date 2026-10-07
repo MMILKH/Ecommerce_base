@@ -14,7 +14,7 @@
         <property name="descrizioneEstesa" column="DESCRIZIONEE" type="java.lang.String" not-null="true"/>
         <property name="immagine" column="IMMAGINE" type="java.lang.String" not-null="true"/>
         <property name="categoria" column="CATEGORIA" type="java.lang.String" not-null="true"/>
-        <property name="prezzo" column="PREZZO" type="double" not-null="true"/>
+        <property name="prezzo" column="PREZZO" type="big_decimal" not-null="true"/>
         <property name="statoPub" column="STATO_PUB" type="int" not-null="true"/>
         <property name="disponibilita" column="DISPONIBILITA" type="int" not-null="true"/>
 

@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class RigaOrdine {
@@ -7,15 +8,15 @@ public class RigaOrdine {
     private Ordine ordine;
     private Prodotto prodotto;
     private int quantita;
-    private double prezzoRiga;
-    private double prezzoUnitario;
+    private BigDecimal prezzoRiga;
+    private BigDecimal prezzoUnitario;
     private int rigaCarrelloId;
     private Date dataCreazione;
 
     public RigaOrdine() {
     }
 
-    public RigaOrdine(int id, Ordine ordine, Prodotto prodotto, int quantita, double prezzoRiga, int rigaCarrelloId, Date dataCreazione, double prezzoUnitario) {
+    public RigaOrdine(int id, Ordine ordine, Prodotto prodotto, int quantita, BigDecimal prezzoRiga, int rigaCarrelloId, Date dataCreazione, BigDecimal prezzoUnitario) {
         this.id = id;
         this.ordine = ordine;
         this.prodotto = prodotto;
@@ -26,7 +27,7 @@ public class RigaOrdine {
         this.prezzoUnitario = prezzoUnitario;
     }
 
-    public RigaOrdine(Ordine ordine, Prodotto prodotto, int quantita, double prezzoRiga, int rigaCarrelloId, Date dataCreazione, double prezzoUnitario) {
+    public RigaOrdine(Ordine ordine, Prodotto prodotto, int quantita, BigDecimal prezzoRiga, int rigaCarrelloId, Date dataCreazione, BigDecimal prezzoUnitario) {
         this.ordine = ordine;
         this.prodotto = prodotto;
         this.quantita = quantita;
@@ -68,11 +69,11 @@ public class RigaOrdine {
         this.quantita = quantita;
     }
 
-    public double getPrezzoRiga() {
+    public BigDecimal getPrezzoRiga() {
         return prezzoRiga;
     }
 
-    public void setPrezzoRiga(double prezzoRiga) {
+    public void setPrezzoRiga(BigDecimal prezzoRiga) {
         this.prezzoRiga = prezzoRiga;
     }
 
@@ -92,11 +93,11 @@ public class RigaOrdine {
         this.dataCreazione = dataCreazione;
     }
 
-    public double getPrezzoUnitario() {
+    public BigDecimal getPrezzoUnitario() {
         return prezzoUnitario;
     }
 
-    public void setPrezzoUnitario(double prezzoUnitario) {
+    public void setPrezzoUnitario(BigDecimal prezzoUnitario) {
         this.prezzoUnitario = prezzoUnitario;
     }
 

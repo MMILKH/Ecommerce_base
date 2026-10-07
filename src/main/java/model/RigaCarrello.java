@@ -30,6 +30,7 @@ public class RigaCarrello {
         this.prodotto = prodotto;
         this.quantita = quantita;
         this.dataCreazione = dataCreazione;
+        this.ultimaModifica = ultimaModifica;
     }
 
 

@@ -5,12 +5,12 @@
 <hibernate-mapping>
     <class name="model.RigaOrdine" table="RIGA_ORDINE">
         <id name="id" column="ID" type="int">
-            <generator class="native"/>
+            <generator class="identity"/>
         </id>
 
         <property name="quantita" column="QUANTITA" type="int" not-null="true"/>
-        <property name="prezzoUnitario" column="PREZZO_UNITARIO" type="double" not-null="true"/>
-        <property name="prezzoRiga" column="PREZZO_RIGA" type="double" not-null="true"/>
+        <property name="prezzoUnitario" column="PREZZO_UNITARIO" type="big_decimal" not-null="true"/>
+        <property name="prezzoRiga" column="PREZZO_RIGA" type="big_decimal" not-null="true"/>
         <property name="rigaCarrelloId" column="RIGA_CARRELLO_ID" type="int" not-null="true"/>
         <property name="dataCreazione" column="DATA_CREAZIONE" type="timestamp" not-null="true"/>
 
@@ -20,7 +20,7 @@
         </many-to-one>
 
 
-        <many-to-one name="prodotto" class="model.Prodotto" not-null="true">
+        <many-to-one name="prodotto" class="model.Prodotto" not-null="true" lazy="false">
             <column name="PRODOTTO_ID"/>
         </many-to-one>
 

@@ -19,7 +19,7 @@
         </many-to-one>
 
 
-        <many-to-one name="prodotto" class="model.Prodotto" not-null="true">
+        <many-to-one name="prodotto" class="model.Prodotto" not-null="true" lazy="false">
             <column name="PRODOTTO_ID"/>
         </many-to-one>
 

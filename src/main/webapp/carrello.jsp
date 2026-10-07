@@ -68,8 +68,13 @@
                     <form action="${pageContext.request.contextPath}/ordine" method="post">
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold" for="indirizzo">Indirizzo di Spedizione</label>
-                            <input class="form-control" type="text" id="indirizzo" name="indirizzoS" required>
+                            <label class="form-label fw-bold" for="indirizzoS">Indirizzo di Spedizione</label>
+                            <input class="form-control" type="text" id="indirizzoS" name="indirizzoS" required>
+                        </div>
+                        <input type="hidden" name="totale" value="${totale}"/>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="indirizzoF">Indirizzo di Fatturazione</label>
+                            <input class="form-control" type="text" id="indirizzoF" name="indirizzoF">
                         </div>
 
                         <button type="submit" class="btn btn-success w-100 fw-bold  text-light">

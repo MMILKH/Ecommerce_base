@@ -1,69 +1,69 @@
-//package dao;
-//
-//import model.Carrello;
-//import model.Ordine;
-//import util.DBConnection;
-//
-//import java.sql.*;
-//
-//public class OrdineDao {
-//
-//    public Ordine findByUtenteId(int utenteId) {
-//        String sql = "SELECT * FROM ordine WHERE utente_id = ?";
-//        Ordine ordine = null;
-//
-//        try (Connection conn = DBConnection.getConnection();
-//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//
-//            pstmt.setInt(1, utenteId);
-//
-//            try (ResultSet rs = pstmt.executeQuery()) {
-//                if (rs.next()) {
-//                    ordine = new Ordine(
-//                            rs.getInt("id"),
-//                            rs.getInt("utente_id"),
-//                            rs.getInt("stato_id"),
-//                            rs.getDouble("importo"),
-//                            rs.getString("indirizzo"),
-//                            rs.getString("data_creazione")
-//                    );
-//                }
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return ordine;
-//    }
-//
-//    public boolean save(Ordine ordine) {
-//        String sql = "INSERT INTO ordine (utente_id, data_creazione, importo,indirizzo,stato_id) " +
-//                "VALUES (?, SYSDATE, ?,?,1)";
-//
-//        try (Connection conn = DBConnection.getConnection();
-//             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-//
-//            pstmt.setInt(1, ordine.getUtenteId());
-//
-//            pstmt.setDouble(2, ordine.getImportoTotale());
-//            pstmt.setString(3, ordine.getIndirizzoSpedizione());
-//
-//
-//            int riuscito = pstmt.executeUpdate();
-//            if (riuscito > 0) {
-//
-//                Carrello c = new Carrello();
-//                CarrelloDao carrelloDao = new CarrelloDao();
-//                c = carrelloDao.findByUtenteId(ordine.getUtenteId());
-//                RigaCarrelloDao rc = new RigaCarrelloDao();
-//                rc.svuotaCarrello(ordine.getId());
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        return true;
-//    }
-//}
+package dao;
+
+import model.Ordine;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import util.HibernateUtil;
+
+import java.util.List;
+
+public class OrdineDao {
+
+    public List<Ordine> findAllByUtenteId(int utenteId) {
+
+        String hql = "FROM Ordine o WHERE o.utente.id = :utenteId";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Ordine.class).setParameter("utenteId", utenteId).list();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Ordine> findAll() {
+
+        String hql = "FROM Ordine GROUP BY Ordine.id ";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Ordine.class).list();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    public boolean save(Ordine ordine) {
+        Transaction tx = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.persist(ordine);
+            tx.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (tx != null && tx.isActive()) {
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+            return false;
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+
+            }
+        }
+    }
+
+
+
+
+
+}

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class CarrelloServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        double totale = 0;
+        BigDecimal totale = BigDecimal.valueOf(0);
 
         Utente u = null;
 
@@ -57,7 +58,7 @@ public class CarrelloServlet extends HttpServlet {
             u = (Utente) session.getAttribute("utenteLoggato");
         }
 
-        Carrello c = carrelloDao.findByUtenteId(u.getId());
+        Carrello c = carrelloDao.findNewByUtenteId(u.getId());
         List<RigaCarrello> righe = rigaCarrelloDao.findByCarrelloId(c.getId());
         List<Prodotto> prodotti = new ArrayList<>();
         Map<Integer, Integer> quantitaxprodotto = new HashMap<>();
@@ -65,8 +66,9 @@ public class CarrelloServlet extends HttpServlet {
             quantitaxprodotto.put((Integer) r.getProdotto().getId(), (Integer) r.getQuantita());
             Prodotto p = prodottoDao.findById(r.getProdotto().getId());
             prodotti.add(p);
-
-            totale += p.getPrezzo() * r.getQuantita();
+            BigDecimal temp;
+            temp = p.getPrezzo().multiply(BigDecimal.valueOf(r.getQuantita()));
+            totale = totale.add(temp);
 
         }
         request.setAttribute("listaProdotti", prodotti);
@@ -97,26 +99,20 @@ public class CarrelloServlet extends HttpServlet {
             case "aggiornaq":
                 if (session != null) {
                     u = (Utente) session.getAttribute("utenteLoggato");
-                    Carrello c = carrelloDao.findByUtenteId(u.getId());
+                    Carrello c = carrelloDao.findNewByUtenteId(u.getId());
                     Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
-                    rigaCarrelloDao.updateQuantita(c.getId(), p.getId(), Integer.parseInt(request.getParameter("quantita")));
-                    int id = u.getId();
-                    Carrello carrello = carrelloDao.findByUtenteId(id);
-                    carrello.setUltimoAggiornamento(new java.util.Date());
-                    carrelloDao.updateUltimoAggiornamento(carrello);
+                    RigaCarrello rc = rigaCarrelloDao.findByCIdPId(c.getId(), p.getId());
+                    rigaCarrelloDao.updateQuantita(rc.getId(), Integer.parseInt(request.getParameter("quantita")));
                     response.sendRedirect(request.getContextPath() + "/carrello");
                     break;
                 }
             case "rimuovi":
                 if (session != null) {
                     u = (Utente) session.getAttribute("utenteLoggato");
-                    Carrello c = carrelloDao.findByUtenteId(u.getId());
+                    Carrello c = carrelloDao.findNewByUtenteId(u.getId());
                     Prodotto p = prodottoDao.findById(Integer.parseInt(request.getParameter("prodottoId")));
-                    rigaCarrelloDao.delete(c.getId(), p.getId());
-                    int id = u.getId();
-                    Carrello carrello = carrelloDao.findByUtenteId(id);
-                    carrello.setUltimoAggiornamento(new java.util.Date());
-                    carrelloDao.updateUltimoAggiornamento(carrello);
+                    RigaCarrello rc = rigaCarrelloDao.findByCIdPId(c.getId(), p.getId());
+                    rigaCarrelloDao.delete(rc.getId());
                     response.sendRedirect(request.getContextPath() + "/carrello");
                     break;
                 }

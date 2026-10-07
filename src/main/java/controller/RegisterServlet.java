@@ -71,6 +71,7 @@ public class RegisterServlet extends HttpServlet {
                 carrello.setUtente(temp);
                 carrello.setDataCreazione(new java.util.Date());
                 carrello.setUltimoAggiornamento(new java.util.Date());
+                carrello.setStato("NEW");
                 carrelloDao.save(carrello);
 
                 response.sendRedirect(request.getContextPath() + "/login");
