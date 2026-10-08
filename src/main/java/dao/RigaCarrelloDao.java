@@ -19,6 +19,15 @@ public class RigaCarrelloDao {
         }
     }
 
+    public RigaCarrello findById(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(RigaCarrello.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public RigaCarrello findByCIdPId(int carrelloId, int prodottoId) {
         String hql = "FROM RigaCarrello rc WHERE rc.carrello.id = :carrelloId AND rc.prodotto.id = :prodottoId";

@@ -26,28 +26,28 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <c:forEach items="${listaProdotti}" var="p">
+            <c:forEach items="${listaRighe}" var="r">
                 <div class="card mb-3 p-3">
                     <div class="row align-items-center">
                         <div class="col-md-7">
-                            <h3>${p.nome}</h3>
-                            <p class="text-muted mb-1">${p.descrizioneBreve}</p>
-                            <p class="fw-bold">&euro; ${p.prezzo}</p>
+                            <h3>${r.prodotto.nome}</h3>
+                            <p class="text-muted mb-1">${r.prodotto.descrizioneBreve}</p>
+                            <p class="fw-bold">&euro; ${r.prodotto.prezzo}</p>
                         </div>
 
                         <div class="col-md-5 text-md-end mt-3 mt-md-0">
                             <form action="${pageContext.request.contextPath}/carrello" method="post"
                                   class="d-inline-flex align-items-center gap-2 mb-2">
                                 <input type="hidden" name="azione" value="aggiornaq"/>
-                                <input type="hidden" name="prodottoId" value="${p.id}"/>
-                                <input type="number" name="quantita" value="${listaQuantita[p.id]}" min="1" max="99"
+                                <input type="hidden" name="rigaCarrelloId" value="${r.id}"/>
+                                <input type="number" name="quantita" value="${r.quantita}" min="1" max="99"
                                        class="form-control form-control-sm text-center" style="width: 60px;"/>
                                 <button type="submit" class="btn btn-outline-secondary btn-sm">Aggiorna</button>
                             </form>
 
                             <form action="${pageContext.request.contextPath}/carrello" method="post" class="d-inline">
                                 <input type="hidden" name="azione" value="rimuovi"/>
-                                <input type="hidden" name="prodottoId" value="${p.id}"/>
+                                <input type="hidden" name="rigaCarrelloId" value="${r.id}"/>
                                 <button type="submit" class="btn btn-outline-danger btn-sm">Rimuovi</button>
                             </form>
                         </div>

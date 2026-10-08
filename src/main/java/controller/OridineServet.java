@@ -48,11 +48,9 @@ public class OridineServet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login");
         } else {
             u = (Utente) session.getAttribute("utenteLoggato");
-
-
-            BigDecimal totale = BigDecimal.valueOf(0);
+            BigDecimal totale;
             Carrello c = carrelloDao.findNewByUtenteId(u.getId());
-            Stato s = statoDao.findById(1);
+            Stato s = statoDao.findByCodice("PEN");
             List<RigaCarrello> righeC = rigaCarrelloDao.findByCarrelloId(c.getId());
             o.setDataCreazione(new java.util.Date());
             double temp = Double.parseDouble(request.getParameter("totale"));
@@ -76,7 +74,6 @@ public class OridineServet extends HttpServlet {
             BigDecimal temp2;
 
             for (RigaCarrello r : righeC) {
-                temp2 = BigDecimal.valueOf(0);
                 RigaOrdine rO = new RigaOrdine();
                 rO.setOrdine(o);
                 temp2 = r.getProdotto().getPrezzo().multiply(BigDecimal.valueOf(r.getQuantita()));

@@ -26,4 +26,11 @@ public class StatoDao {
         }
         return null;
     }
+
+    public Stato findByCodice(String cod) {
+        String hql = "FROM Stato WHERE codice = :codice";
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Stato.class).setParameter("codice", cod).uniqueResult();
+        }
+    }
 }

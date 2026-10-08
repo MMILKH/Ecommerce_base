@@ -53,6 +53,7 @@ public class CarrelloDao {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             Carrello c = session.get(Carrello.class, carrelloId);
+            c.setUltimoAggiornamento(new java.util.Date());
             c.setStato("COMPLETED");
             tx.commit();
         } catch (Exception e) {

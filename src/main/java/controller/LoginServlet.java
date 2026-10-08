@@ -1,6 +1,8 @@
 package controller;
 
+import dao.CarrelloDao;
 import dao.UtenteDao;
+import model.Carrello;
 import model.Utente;
 import util.Password;
 
@@ -72,6 +74,18 @@ public class LoginServlet extends HttpServlet {
 
             HttpSession session = request.getSession();
             session.setAttribute("utenteLoggato", utente);
+            CarrelloDao carrelloDao = new CarrelloDao();
+            Carrello carrello=carrelloDao.findNewByUtenteId(utente.getId());
+
+            if (carrello == null) {
+
+                carrello=new Carrello();
+                carrello.setUltimoAggiornamento(new java.util.Date());
+                carrello.setUtente(utente);
+                carrello.setStato("NEW");
+                carrello.setDataCreazione(new java.util.Date());
+                carrelloDao.save(carrello);
+            }
 
 
             response.sendRedirect(request.getContextPath() + "/catalogo");
